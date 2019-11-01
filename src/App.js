@@ -8,6 +8,7 @@ import "./App.css";
 function App() {
   const [memoryState, setMemoryState] = useState(memory);
   const [step, setStep] = useState(0);
+  const [ip, setIp] = useState(cpu.getRegister("ip"));
   return (
     <div className="App">
       <h1>Code</h1>
@@ -17,11 +18,12 @@ function App() {
           cpu.step();
           setMemoryState(memory);
           setStep(step + 1);
+          setIp(cpu.getRegister("ip"));
         }}
       >
         Step
       </button>
-      <Memory memory={memoryState} />
+      <Memory memory={memoryState} ip={ip} />
       <Registers cpu={cpu} />
     </div>
   );
