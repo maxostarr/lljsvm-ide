@@ -1,5 +1,9 @@
 import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+
 import "./memory.css";
+
 const viewMemoryAt = (address, memory) => {
   const bytes = Array.from({ length: 8 }, (_, i) => {
     const v = memory.getUint8(address + i);
@@ -11,7 +15,16 @@ const viewMemoryAt = (address, memory) => {
   return { blockStart: address.toString(16).padStart(4, "0"), bytes: bytes };
 };
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    padding: theme.spacing(3, 2),
+    fontFamily: "Roboto Mono"
+  }
+}));
+
 function Memory({ memory, ip }) {
+  const classes = useStyles();
+
   const displayBytes = Array.from(
     { length: 0x0100 / 0x0008 + 0x0001 },
     (_, i) => {
@@ -32,7 +45,7 @@ function Memory({ memory, ip }) {
     }
   );
 
-  return <div className="Memory">{displayBytes}</div>;
+  return <Paper className={classes.root}>{displayBytes}</Paper>;
 }
 
 export default Memory;

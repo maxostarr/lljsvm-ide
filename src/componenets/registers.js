@@ -1,4 +1,6 @@
 import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
 
 const registerNames = [
   "ip",
@@ -13,11 +15,21 @@ const registerNames = [
   "r8"
 ];
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    padding: theme.spacing(3, 2)
+  },
+  register: {
+    fontFamily: "Roboto Mono"
+  }
+}));
+
 function Registers({ cpu }) {
+  const classes = useStyles();
   const registerDisplayElems = registerNames.map((name, index) => {
     return (
-      <div key={index}>
-        {name}:{" "}
+      <div key={index} className={classes.register}>
+        {name.padEnd(3, " ")}:{" 0x"}
         {cpu
           .getRegister(name)
           .toString(16)
@@ -25,7 +37,7 @@ function Registers({ cpu }) {
       </div>
     );
   });
-  return <div className="Registers">{registerDisplayElems}</div>;
+  return <Paper className={classes.root}>{registerDisplayElems}</Paper>;
 }
 
 export default Registers;

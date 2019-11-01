@@ -1,11 +1,11 @@
 .Memory {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  font-family: "Roboto Mono", source-code-pro, Menlo, Monaco, Consolas,
+    "Courier New", monospace;
 }
 span {
   margin-left: 0.5em;
 }
 
 .highlighted {
-  background-color: yellow;
+  background-color: rgb(141, 141, 63);
 }
