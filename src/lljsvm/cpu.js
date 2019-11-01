@@ -1,4 +1,4 @@
-const createMemory = require("./create-memory");
+const createMemory = require("./create-memory").default;
 const instructions = require("./instructions");
 
 class CPU {

@@ -4,4 +4,4 @@ const createMemory = sizeInBytes => {
   return dv;
 };
 
-module.exports = createMemory;
+export default createMemory;

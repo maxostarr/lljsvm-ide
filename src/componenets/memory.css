@@ -1,8 +1,7 @@
-.App {
-  text-align: center;
-}
-
-/* .code {
+.Memory {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
-} */
+}
+span {
+  padding: 0.5em;
+}
