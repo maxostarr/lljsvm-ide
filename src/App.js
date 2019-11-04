@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
+import Link from "@material-ui/core/Link";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
 import Memory from "./componenets/memory";
@@ -78,6 +79,17 @@ function App() {
         </Grid>
         <Grid item xs={1}>
           <Registers cpu={cpu} />
+        </Grid>
+        <Grid item xs={8}></Grid>
+        <Grid item xs={12}>
+          <p>
+            By Max Starr. Based on the{" "}
+            <Link href="https://github.com/LowLevelJavaScript/16-Bit-Virtual-Machine">
+              lljsvm project
+            </Link>
+            . The repo for this project can be found{" "}
+            <Link href="https://github.com/manmon42/lljsvm-ide">here</Link>
+          </p>
         </Grid>
       </Grid>
     </div>
