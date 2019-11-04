@@ -29,10 +29,16 @@ const useStyles = makeStyles(theme => ({
     outlineColor: theme.palette.secondary.main,
     outlineWidth: 1
     // backgroundColor: theme.palette.secondary[900]
+  },
+  highlightedPrimary: {
+    outline: "solid",
+    outlineColor: theme.palette.primary.main,
+    outlineWidth: 1
+    // backgroundColor: theme.palette.secondary[900]
   }
 }));
 
-function Memory({ memory, ip }) {
+function Memory({ memory, ip, readwriteaddr, readOrWrite }) {
   const classes = useStyles();
   const [memoryBank, setMemoryBank] = useState(0);
 
@@ -44,7 +50,14 @@ function Memory({ memory, ip }) {
         <span
           className={
             classes.byte +
-            (ip === byte.address ? " " + classes.highlighted : "")
+            (ip === byte.address ? " " + classes.highlighted : "") +
+            (readwriteaddr + 1 === byte.address
+              ? readOrWrite === "read"
+                ? " " + classes.highlighted
+                : readOrWrite === "write"
+                ? " " + classes.highlightedPrimary
+                : ""
+              : "")
           }
           key={byte.address}
         >

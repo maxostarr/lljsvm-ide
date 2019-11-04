@@ -31,6 +31,22 @@ function App() {
   const [memoryState, setMemoryState] = useState(memory);
   const [step, setStep] = useState(0);
   const [ip, setIp] = useState(cpu.getRegister("ip"));
+  const [readWriteAddr, setReadWriteAddr] = useState();
+  const [readOrWrite, setReadOrWrite] = useState();
+  const instructionCallback = (instr, addr) => {
+    console.log(instr, addr);
+    if (instr === "MOV_MEM_REG") {
+      setReadOrWrite("read");
+    } else if (instr === "MOV_REG_MEM") {
+      setReadOrWrite("write");
+    } else {
+      setReadOrWrite("");
+    }
+    setReadWriteAddr(addr);
+  };
+
+  cpu.setInstructionCallback(instructionCallback);
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -53,7 +69,12 @@ function App() {
           </Button>
         </Grid>
         <Grid item xs={3}>
-          <Memory memory={memoryState} ip={ip} />
+          <Memory
+            memory={memoryState}
+            ip={ip}
+            readwriteaddr={readWriteAddr}
+            readOrWrite={readOrWrite}
+          />
         </Grid>
         <Grid item xs={1}>
           <Registers cpu={cpu} />
