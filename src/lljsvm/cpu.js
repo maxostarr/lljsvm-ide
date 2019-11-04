@@ -158,4 +158,4 @@ class CPU {
   }
 }
 
-module.exports = CPU;
+export default CPU;
