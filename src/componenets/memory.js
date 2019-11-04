@@ -4,8 +4,6 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 
-import "./memory.css";
-
 const viewMemoryAt = (address, memory) => {
   const bytes = Array.from({ length: 8 }, (_, i) => {
     const v = memory.getUint8(address + i);
