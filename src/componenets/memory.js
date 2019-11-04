@@ -27,7 +27,10 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(1)
   },
   highlighted: {
-    backgroundColor: theme.palette.secondary[900]
+    outline: "solid",
+    outlineColor: theme.palette.secondary.main,
+    outlineWidth: 1
+    // backgroundColor: theme.palette.secondary[900]
   }
 }));
 
