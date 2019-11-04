@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 
@@ -18,17 +19,19 @@ const viewMemoryAt = (address, memory) => {
 const useStyles = makeStyles(theme => ({
   root: {
     padding: theme.spacing(3, 2),
-    fontFamily: "Roboto Mono"
+    fontFamily: "Roboto Mono",
+    minWidth: 300
   }
 }));
 
 function Memory({ memory, ip }) {
   const classes = useStyles();
+  const [memoryBank, setMemoryBank] = useState(0);
 
   const displayBytes = Array.from(
     { length: 0x0100 / 0x0008 + 0x0001 },
     (_, i) => {
-      const bytes = viewMemoryAt(i * 0x0008, memory);
+      const bytes = viewMemoryAt((i + memoryBank) * 0x0008, memory);
       const byteSpans = bytes.bytes.map(byte => (
         <span
           className={byte.address + (ip === byte.address ? " highlighted" : "")}
@@ -45,7 +48,40 @@ function Memory({ memory, ip }) {
     }
   );
 
-  return <Paper className={classes.root}>{displayBytes}</Paper>;
+  return (
+    <Paper className={classes.root}>
+      <div className={classes.controls}>
+        <h3>
+          Addresses: 0x{(memoryBank * 0x0008).toString(16).padStart(4, "0")} to
+          0x
+          {(memoryBank * 0x0008 + 0x0100).toString(16).padStart(4, "0")}
+          <Button
+            onClick={() => {
+              if (memoryBank === 0) {
+                setMemoryBank(memoryBank);
+              } else {
+                setMemoryBank(memoryBank - 0x0100 / 0x0008);
+              }
+            }}
+          >
+            Back
+          </Button>
+          <Button
+            onClick={() => {
+              if (memoryBank === 256 * 256) {
+                setMemoryBank(memoryBank);
+              } else {
+                setMemoryBank(memoryBank + 0x0100 / 0x0008);
+              }
+            }}
+          >
+            Next
+          </Button>
+        </h3>
+      </div>
+      {displayBytes}
+    </Paper>
+  );
 }
 
 export default Memory;
