@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 
@@ -21,6 +22,9 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(3, 2),
     fontFamily: "Roboto Mono",
     minWidth: 300
+  },
+  byte: {
+    marginLeft: theme.spacing(1)
   }
 }));
 
@@ -34,7 +38,7 @@ function Memory({ memory, ip }) {
       const bytes = viewMemoryAt((i + memoryBank) * 0x0008, memory);
       const byteSpans = bytes.bytes.map(byte => (
         <span
-          className={byte.address + (ip === byte.address ? " highlighted" : "")}
+          className={classes.byte + (ip === byte.address ? " highlighted" : "")}
           key={byte.address}
         >
           {byte.value}
@@ -54,29 +58,35 @@ function Memory({ memory, ip }) {
         <h3>
           Addresses: 0x{(memoryBank * 0x0008).toString(16).padStart(4, "0")} to
           0x
-          {(memoryBank * 0x0008 + 0x0100).toString(16).padStart(4, "0")}
-          <Button
-            onClick={() => {
-              if (memoryBank === 0) {
-                setMemoryBank(memoryBank);
-              } else {
-                setMemoryBank(memoryBank - 0x0100 / 0x0008);
-              }
-            }}
-          >
-            Back
-          </Button>
-          <Button
-            onClick={() => {
-              if (memoryBank === 256 * 256) {
-                setMemoryBank(memoryBank);
-              } else {
-                setMemoryBank(memoryBank + 0x0100 / 0x0008);
-              }
-            }}
-          >
-            Next
-          </Button>
+          {(memoryBank * 0x0008 + 0x0100).toString(16).padStart(4, "0")}{" "}
+          <ButtonGroup color="primary">
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={() => {
+                if (memoryBank === 0) {
+                  setMemoryBank(memoryBank);
+                } else {
+                  setMemoryBank(memoryBank - 0x0100 / 0x0008);
+                }
+              }}
+            >
+              Back
+            </Button>
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={() => {
+                if (memoryBank === 256 * 256) {
+                  setMemoryBank(memoryBank);
+                } else {
+                  setMemoryBank(memoryBank + 0x0100 / 0x0008);
+                }
+              }}
+            >
+              Next
+            </Button>
+          </ButtonGroup>
         </h3>
       </div>
       {displayBytes}
