@@ -75,7 +75,7 @@ class CPU {
     this.setRegister("ip", nextInstructionAddress + 2);
     return instruction;
   }
-
+  /* eslint-disable */
   execute(instruction) {
     switch (instruction) {
       // Move literal into register
