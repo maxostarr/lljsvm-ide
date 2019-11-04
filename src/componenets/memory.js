@@ -21,10 +21,13 @@ const useStyles = makeStyles(theme => ({
   root: {
     padding: theme.spacing(3, 2),
     fontFamily: "Roboto Mono",
-    minWidth: 300
+    minWidth: 450
   },
   byte: {
     marginLeft: theme.spacing(1)
+  },
+  highlighted: {
+    backgroundColor: theme.palette.secondary[900]
   }
 }));
 
@@ -38,7 +41,10 @@ function Memory({ memory, ip }) {
       const bytes = viewMemoryAt((i + memoryBank) * 0x0008, memory);
       const byteSpans = bytes.bytes.map(byte => (
         <span
-          className={classes.byte + (ip === byte.address ? " highlighted" : "")}
+          className={
+            classes.byte +
+            (ip === byte.address ? " " + classes.highlighted : "")
+          }
           key={byte.address}
         >
           {byte.value}
