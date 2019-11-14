@@ -7,6 +7,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 
 import Memory from "./componenets/memory";
 import Registers from "./componenets/registers";
+import Stack from "./componenets/stack";
 import { cpu, memory } from "./lljsvm/index";
 
 const useStyles = makeStyles(theme => ({
@@ -32,8 +33,11 @@ function App() {
   const [memoryState, setMemoryState] = useState(memory);
   const [step, setStep] = useState(0);
   const [ip, setIp] = useState(cpu.getRegister("ip"));
+  const [sp, setSp] = useState(cpu.getRegister("sp"));
+  const [fp, setFp] = useState(cpu.getRegister("fp"));
   const [readWriteAddr, setReadWriteAddr] = useState();
   const [readOrWrite, setReadOrWrite] = useState();
+
   const instructionCallback = (instr, addr) => {
     console.log(instr, addr);
     if (instr === "MOV_MEM_REG") {
@@ -64,6 +68,8 @@ function App() {
               setMemoryState(memory);
               setStep(step + 1);
               setIp(cpu.getRegister("ip"));
+              setSp(cpu.getRegister("sp"));
+              setFp(cpu.getRegister("fp"));
             }}
           >
             Step
@@ -80,7 +86,10 @@ function App() {
         <Grid item xs={1}>
           <Registers cpu={cpu} />
         </Grid>
-        <Grid item xs={8}></Grid>
+        <Grid item xs={1}>
+          <Stack memory={memoryState} sp={sp} fp={fp} />
+        </Grid>
+        <Grid item xs={7}></Grid>
         <Grid item xs={12}>
           <p>
             By Max Starr. Based on the{" "}

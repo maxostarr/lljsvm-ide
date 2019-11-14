@@ -24,65 +24,65 @@ const useStyles = makeStyles(theme => ({
   byte: {
     marginLeft: theme.spacing(1)
   },
-  highlighted: {
+  highlightedRed: {
     outline: "solid",
-    outlineColor: theme.palette.secondary.main,
+    outlineColor: theme.palette.error.main,
     outlineWidth: 1
-    // backgroundColor: theme.palette.secondary[900]
   },
-  highlightedPrimary: {
+  highlightedGreen: {
     outline: "solid",
-    outlineColor: theme.palette.primary.main,
+    outlineColor: theme.palette.confirm[500],
     outlineWidth: 1
-    // backgroundColor: theme.palette.secondary[900]
+  },
+  doubleHighlighted: {
+    outline: "solid",
+    outlineColor: "white",
+    outlineWidth: 1
   },
   h3: {
     margin: 0
   }
 }));
 
-function Memory({ memory, ip, readwriteaddr, readOrWrite }) {
+function Stack({ memory, sp, fp, readwriteaddr, readOrWrite }) {
   const classes = useStyles();
-  const [memoryBank, setMemoryBank] = useState(0);
+  const [memoryBank, setMemoryBank] = useState((0xffff - 0x00f0) / 0x0008);
 
-  const displayBytes = Array.from(
-    { length: 0x0100 / 0x0008 + 0x0001 },
-    (_, i) => {
-      const bytes = viewMemoryAt((i + memoryBank) * 0x0008, memory);
-      const byteSpans = bytes.bytes.map(byte => (
-        <span
-          className={
-            classes.byte +
-            (ip === byte.address ? " " + classes.highlighted : "") +
-            (readwriteaddr + 1 === byte.address
-              ? readOrWrite === "read"
-                ? " " + classes.highlighted
-                : readOrWrite === "write"
-                ? " " + classes.highlightedPrimary
-                : ""
-              : "")
-          }
-          key={byte.address}
-        >
-          {byte.value === "0x00" ? "----" : byte.value}
-        </span>
-      ));
-      return (
-        <div className={bytes.blockStart} key={bytes.blockStart}>
-          {bytes.blockStart}: {byteSpans}
-        </div>
-      );
-    }
-  );
+  const displayBytes = Array.from({ length: 0x00f0 / 0x0008 }, (_, i) => {
+    const bytes = viewMemoryAt((i + memoryBank) * 0x0008 + 0x0001, memory);
+    const byteSpans = bytes.bytes.map(byte => (
+      <span
+        className={
+          classes.byte +
+          " " +
+          (sp === byte.address
+            ? fp === byte.address
+              ? classes.doubleHighlighted
+              : classes.highlightedRed
+            : fp === byte.address
+            ? classes.highlightedGreen
+            : "")
+        }
+        key={byte.address}
+      >
+        {byte.value === "0x00" ? "----" : byte.value}
+      </span>
+    ));
+    return (
+      <div className={bytes.blockStart} key={bytes.blockStart}>
+        {bytes.blockStart}: {byteSpans}
+      </div>
+    );
+  });
 
   return (
     <Paper className={classes.root}>
-      <h3 className={classes.h3}>Working Memeory</h3>
+      <h3 className={classes.h3}>Stack Memory</h3>
       <div className={classes.controls}>
         <h3>
-          Addresses: 0x{(memoryBank * 0x0008).toString(16).padStart(4, "0")} to
-          0x
-          {(memoryBank * 0x0008 + 0x0100).toString(16).padStart(4, "0")}{" "}
+          Addresses: 0x
+          {(memoryBank * 0x0008 + 0x0001).toString(16).padStart(4, "0")} to 0x
+          {(memoryBank * 0x0008 + 0x00f0).toString(16).padStart(4, "0")}{" "}
           <ButtonGroup color="primary">
             <Button
               variant="outlined"
@@ -91,7 +91,7 @@ function Memory({ memory, ip, readwriteaddr, readOrWrite }) {
                 if (memoryBank === 0) {
                   setMemoryBank(memoryBank);
                 } else {
-                  setMemoryBank(memoryBank - 0x0100 / 0x0008);
+                  setMemoryBank(memoryBank - 0x00f0 / 0x0008);
                 }
               }}
             >
@@ -104,7 +104,7 @@ function Memory({ memory, ip, readwriteaddr, readOrWrite }) {
                 if (memoryBank === 256 * 256) {
                   setMemoryBank(memoryBank);
                 } else {
-                  setMemoryBank(memoryBank + 0x0100 / 0x0008);
+                  setMemoryBank(memoryBank + 0x00f0 / 0x0008);
                 }
               }}
             >
@@ -118,4 +118,4 @@ function Memory({ memory, ip, readwriteaddr, readOrWrite }) {
   );
 }
 
-export default Memory;
+export default Stack;

@@ -16,7 +16,9 @@ class CPU {
       "r5",
       "r6",
       "r7",
-      "r8"
+      "r8",
+      "sp",
+      "fp"
     ];
 
     this.registers = createMemory(this.registerNames.length * 2);
@@ -25,6 +27,11 @@ class CPU {
       map[name] = i * 2;
       return map;
     }, {});
+
+    this.setRegister("sp", memory.byteLength - 1 - 1);
+    this.setRegister("fp", memory.byteLength - 1 - 1);
+
+    this.stackFrameSize = 0;
   }
 
   setInstructionCallback(instructionCallback) {
@@ -80,13 +87,73 @@ class CPU {
     this.setRegister("ip", nextInstructionAddress + 2);
     return instruction;
   }
+
+  push(value) {
+    const spAddress = this.getRegister("sp");
+    this.memory.setUint16(spAddress, value);
+    this.setRegister("sp", spAddress - 2);
+    this.stackFrameSize += 2;
+  }
+
+  pop() {
+    const nextSpAddress = this.getRegister("sp") + 2;
+    this.setRegister("sp", nextSpAddress);
+    this.stackFrameSize -= 2;
+    return this.memory.getUint16(nextSpAddress);
+  }
+
+  pushState() {
+    this.push(this.getRegister("r1"));
+    this.push(this.getRegister("r2"));
+    this.push(this.getRegister("r3"));
+    this.push(this.getRegister("r4"));
+    this.push(this.getRegister("r5"));
+    this.push(this.getRegister("r6"));
+    this.push(this.getRegister("r7"));
+    this.push(this.getRegister("r8"));
+    this.push(this.getRegister("ip"));
+    this.push(this.stackFrameSize + 2);
+
+    this.setRegister("fp", this.getRegister("sp"));
+    this.stackFrameSize = 0;
+  }
+
+  popState() {
+    const framePointerAddress = this.getRegister("fp");
+    this.setRegister("sp", framePointerAddress);
+
+    this.stackFrameSize = this.pop();
+    const stackFrameSize = this.stackFrameSize;
+
+    this.setRegister("ip", this.pop());
+    this.setRegister("r8", this.pop());
+    this.setRegister("r7", this.pop());
+    this.setRegister("r6", this.pop());
+    this.setRegister("r5", this.pop());
+    this.setRegister("r4", this.pop());
+    this.setRegister("r3", this.pop());
+    this.setRegister("r2", this.pop());
+    this.setRegister("r1", this.pop());
+
+    const nArgs = this.pop();
+    for (let i = 0; i < nArgs; i++) {
+      this.pop();
+    }
+
+    this.setRegister("fp", framePointerAddress + stackFrameSize);
+  }
+
+  fetchRegisterIndex() {
+    return (this.fetch() % this.registerNames.length) * 2;
+  }
+
   /* eslint-disable */
   execute(instruction) {
     switch (instruction) {
       // Move literal into register
       case instructions.MOV_LIT_REG: {
         const literal = this.fetch16();
-        const register = (this.fetch() % this.registerNames.length) * 2;
+        const register = this.fetchRegisterIndex();
         this.registers.setUint16(register, literal);
         this.instructionCallback("MOV_LIT_REG", null);
 
@@ -95,8 +162,8 @@ class CPU {
 
       // Move register to register
       case instructions.MOV_REG_REG: {
-        const registerFrom = (this.fetch() % this.registerNames.length) * 2;
-        const registerTo = (this.fetch() % this.registerNames.length) * 2;
+        const registerFrom = this.fetchRegisterIndex();
+        const registerTo = this.fetchRegisterIndex();
         const value = this.registers.getUint16(registerFrom);
         this.registers.setUint16(registerTo, value);
         this.instructionCallback("MOV_REG_REG", null);
@@ -106,7 +173,7 @@ class CPU {
 
       // Move register to memory
       case instructions.MOV_REG_MEM: {
-        const registerFrom = (this.fetch() % this.registerNames.length) * 2;
+        const registerFrom = this.fetchRegisterIndex();
         const address = this.fetch16();
         const value = this.registers.getUint16(registerFrom);
         this.memory.setUint16(address, value);
@@ -117,7 +184,7 @@ class CPU {
       // Move memory to register
       case instructions.MOV_MEM_REG: {
         const address = this.fetch16();
-        const registerTo = (this.fetch() % this.registerNames.length) * 2;
+        const registerTo = this.fetchRegisterIndex();
         const value = this.memory.getUint16(address);
         this.registers.setUint16(registerTo, value);
         this.instructionCallback("MOV_MEM_REG", address);
@@ -147,6 +214,51 @@ class CPU {
         }
         this.instructionCallback("JMP_NOT_EQ", null);
 
+        return;
+      }
+
+      // Push Literal
+      case instructions.PSH_LIT: {
+        const value = this.fetch16();
+        this.push(value);
+        return;
+      }
+
+      // Push Register
+      case instructions.PSH_REG: {
+        const registerIndex = this.fetchRegisterIndex();
+        this.push(this.registers.getUint16(registerIndex));
+        return;
+      }
+
+      // Pop
+      case instructions.POP: {
+        const registerIndex = this.fetchRegisterIndex();
+        const value = this.pop();
+        this.registers.setUint16(registerIndex, value);
+        return;
+      }
+
+      // Call literal
+      case instructions.CAL_LIT: {
+        const address = this.fetch16();
+        this.pushState();
+        this.setRegister("ip", address);
+        return;
+      }
+
+      // Call register
+      case instructions.CAL_REG: {
+        const registerIndex = this.fetchRegisterIndex();
+        const address = this.registers.getUint16(registerIndex);
+        this.pushState();
+        this.setRegister("ip", address);
+        return;
+      }
+
+      // Return from subroutine
+      case instructions.RET: {
+        this.popState();
         return;
       }
     }

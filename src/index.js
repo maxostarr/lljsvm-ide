@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import blue from "@material-ui/core/colors/blue";
 import lime from "@material-ui/core/colors/lime";
+import red from "@material-ui/core/colors/red";
+import green from "@material-ui/core/colors/green";
 
 import "./index.css";
 import App from "./App";
@@ -12,7 +14,9 @@ const theme = createMuiTheme({
   palette: {
     type: "dark",
     primary: blue,
-    secondary: lime
+    secondary: lime,
+    error: red,
+    confirm: green
   }
 });
 
