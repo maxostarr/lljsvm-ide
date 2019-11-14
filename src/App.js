@@ -61,6 +61,7 @@ function App() {
         </Grid>
         <Grid item xs={11}>
           <Button
+            color="primary"
             variant="outlined"
             className={classes.button}
             onClick={e => {
