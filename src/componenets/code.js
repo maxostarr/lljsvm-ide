@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Code = ({ memory, ip }) => {
+const Code = ({ memory, ip, setIsRunning }) => {
   const [breakpoints, setBreakpoints] = useState([]);
   const [hoveredItem, setHoveredItem] = useState();
 
@@ -58,6 +58,10 @@ const Code = ({ memory, ip }) => {
     }
     setBreakpoints([address, ...breakpoints]);
   };
+
+  if (breakpoints.includes(ip)) {
+    setIsRunning(false);
+  }
 
   const classes = useStyles();
   let zeroCount = 0;

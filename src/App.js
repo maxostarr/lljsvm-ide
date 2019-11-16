@@ -145,7 +145,7 @@ function App() {
           <Stack memory={memoryState} sp={sp} fp={fp} />
         </Grid>
         <Grid item xs={1}>
-          <Code memory={memoryState} ip={ip} />
+          <Code memory={memoryState} ip={ip} setIsRunning={setIsRunning} />
         </Grid>
         <Grid item xs={12}>
           <p>
