@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import Link from "@material-ui/core/Link";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+
+import useInterval from "./utils/useInterval";
 
 import Memory from "./componenets/memory";
 import Registers from "./componenets/registers";
@@ -38,8 +41,16 @@ function App() {
   const [fp, setFp] = useState(cpu.getRegister("fp"));
   const [readWriteAddr, setReadWriteAddr] = useState();
   const [readOrWrite, setReadOrWrite] = useState();
+  const [runSpeed, setRunSpeed] = useState(5000);
+  const [isRunning, setIsRunning] = useState(false);
+
+  const handleChange = event => {
+    setRunSpeed(event.target.value);
+  };
 
   const stepCPU = () => {
+    console.log("step");
+
     cpu.step();
     setMemoryState(memory);
     setStep(step + 1);
@@ -47,6 +58,12 @@ function App() {
     setSp(cpu.getRegister("sp"));
     setFp(cpu.getRegister("fp"));
   };
+
+  useInterval(() => {
+    if (isRunning) {
+      stepCPU();
+    }
+  }, runSpeed);
 
   const instructionCallback = (instr, addr) => {
     console.log(instr, addr);
@@ -89,6 +106,26 @@ function App() {
                 }}
               >
                 Step
+              </Button>
+            </Grid>
+            <Grid item xs={2}>
+              <TextField
+                id="outlined-basic"
+                className={classes.textField}
+                label="Run Speed"
+                variant="outlined"
+                value={runSpeed}
+                onChange={handleChange}
+              />
+              <Button
+                color="secondary"
+                variant="outlined"
+                className={classes.button}
+                onClick={e => {
+                  setIsRunning(!isRunning);
+                }}
+              >
+                {isRunning ? "Stop" : "Run"}
               </Button>
             </Grid>
           </Grid>

@@ -64,7 +64,6 @@ const Code = ({ memory, ip }) => {
       if (length / 8 === 1) {
         if (type === "register") {
           const register = registerLookupTable.find(({ name, number }) => {
-            console.log(memory.getUint8(i + 1).toString(16));
             return memory.getUint8(i + 1).toString(16) === number.toString(16);
           });
           i++;
