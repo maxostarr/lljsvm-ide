@@ -41,7 +41,7 @@ function App() {
   const [fp, setFp] = useState(cpu.getRegister("fp"));
   const [readWriteAddr, setReadWriteAddr] = useState();
   const [readOrWrite, setReadOrWrite] = useState();
-  const [runSpeed, setRunSpeed] = useState(5000);
+  const [runSpeed, setRunSpeed] = useState(1000);
   const [isRunning, setIsRunning] = useState(false);
 
   const handleChange = event => {
