@@ -38,6 +38,15 @@ function App() {
   const [readWriteAddr, setReadWriteAddr] = useState();
   const [readOrWrite, setReadOrWrite] = useState();
 
+  const stepCPU = () => {
+    cpu.step();
+    setMemoryState(memory);
+    setStep(step + 1);
+    setIp(cpu.getRegister("ip"));
+    setSp(cpu.getRegister("sp"));
+    setFp(cpu.getRegister("fp"));
+  };
+
   const instructionCallback = (instr, addr) => {
     console.log(instr, addr);
     if (instr === "MOV_MEM_REG") {
@@ -56,25 +65,32 @@ function App() {
     <div className={classes.root}>
       <CssBaseline />
       <Grid container spacing={2}>
-        <Grid item xs={1}>
-          <h3>Step: {step}</h3>
-        </Grid>
-        <Grid item xs={11}>
-          <Button
-            color="primary"
-            variant="outlined"
-            className={classes.button}
-            onClick={e => {
-              cpu.step();
-              setMemoryState(memory);
-              setStep(step + 1);
-              setIp(cpu.getRegister("ip"));
-              setSp(cpu.getRegister("sp"));
-              setFp(cpu.getRegister("fp"));
+        <Grid item xs={12}>
+          <Grid
+            container
+            onKeyPress={e => {
+              if (e.key === "Enter") {
+                stepCPU();
+              }
             }}
+            tabIndex={-1}
           >
-            Step
-          </Button>
+            <Grid item xs={1}>
+              <h3>Step: {step}</h3>
+            </Grid>
+            <Grid item xs={1}>
+              <Button
+                color="primary"
+                variant="outlined"
+                className={classes.button}
+                onClick={e => {
+                  stepCPU();
+                }}
+              >
+                Step
+              </Button>
+            </Grid>
+          </Grid>
         </Grid>
         <Grid item xs={3}>
           <Memory
