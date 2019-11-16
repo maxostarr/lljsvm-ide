@@ -8,6 +8,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Memory from "./componenets/memory";
 import Registers from "./componenets/registers";
 import Stack from "./componenets/stack";
+import Code from "./componenets/code";
 import { cpu, memory } from "./lljsvm/index";
 
 const useStyles = makeStyles(theme => ({
@@ -103,10 +104,12 @@ function App() {
         <Grid item xs={1}>
           <Registers cpu={cpu} />
         </Grid>
-        <Grid item xs={1}>
+        <Grid item xs={3}>
           <Stack memory={memoryState} sp={sp} fp={fp} />
         </Grid>
-        <Grid item xs={7}></Grid>
+        <Grid item xs={1}>
+          <Code memory={memoryState} ip={ip} />
+        </Grid>
         <Grid item xs={12}>
           <p>
             By Max Starr. Based on the{" "}
