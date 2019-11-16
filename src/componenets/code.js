@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -17,6 +17,11 @@ const useStyles = makeStyles(theme => ({
   byte: {
     marginLeft: theme.spacing(1)
   },
+  hovered: {
+    outline: "solid",
+    outlineColor: "gray",
+    outlineWidth: 1
+  },
   highlighted: {
     outline: "solid",
     outlineColor: theme.palette.secondary.main,
@@ -25,7 +30,7 @@ const useStyles = makeStyles(theme => ({
   },
   highlightedPrimary: {
     outline: "solid",
-    outlineColor: theme.palette.primary.main,
+    outlineColor: theme.palette.error.main,
     outlineWidth: 1
     // backgroundColor: theme.palette.secondary[900]
   },
@@ -43,6 +48,17 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Code = ({ memory, ip }) => {
+  const [breakpoints, setBreakpoints] = useState([]);
+  const [hoveredItem, setHoveredItem] = useState();
+
+  const toggleBreakpoint = address => {
+    if (breakpoints.includes(address)) {
+      setBreakpoints(breakpoints.filter(item => item !== address));
+      return;
+    }
+    setBreakpoints([address, ...breakpoints]);
+  };
+
   const classes = useStyles();
   let zeroCount = 0;
   let parsed = [];
@@ -90,7 +106,27 @@ const Code = ({ memory, ip }) => {
       return "";
     });
     parsed.push(
-      <div id={address} className={ip === address ? classes.highlighted : ""}>
+      <div
+        onMouseEnter={() => {
+          setHoveredItem(address);
+        }}
+        onMouseLeave={() => {
+          setHoveredItem(null);
+        }}
+        key={address}
+        onClick={e => {
+          toggleBreakpoint(address);
+        }}
+        className={
+          breakpoints.includes(address)
+            ? classes.highlightedPrimary
+            : ip === address
+            ? classes.highlighted
+            : hoveredItem === address
+            ? classes.hovered
+            : " "
+        }
+      >
         {"0x" + address.toString(16).padStart(4, "0")}:{" "}
         <span>{instruction.name.padEnd(12, "\u00a0")} </span>
         {args.map(arg => (
