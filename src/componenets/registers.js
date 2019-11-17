@@ -2,21 +2,6 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 
-const registerNames = [
-  "ip",
-  "acc",
-  "r1",
-  "r2",
-  "r3",
-  "r4",
-  "r5",
-  "r6",
-  "r7",
-  "r8",
-  "sp",
-  "fp"
-];
-
 const useStyles = makeStyles(theme => ({
   root: {
     padding: theme.spacing(3, 2),
@@ -44,9 +29,9 @@ const useStyles = makeStyles(theme => ({
 
 function Registers({ cpu }) {
   const classes = useStyles();
-  const registerDisplayElems = registerNames.map((name, index) => {
+  const registerDisplayElems = cpu.registerNames.map(name => {
     return (
-      <div key={index} className={classes.register + " " + classes[name]}>
+      <div key={name} className={classes.register + " " + classes[name]}>
         {name.padEnd(3, " ")}:{" 0x"}
         {cpu
           .getRegister(name)
