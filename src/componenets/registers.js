@@ -19,9 +19,7 @@ const registerNames = [
 
 const useStyles = makeStyles(theme => ({
   root: {
-    padding: theme.spacing(3, 2)
-  },
-  register: {
+    padding: theme.spacing(3, 2),
     fontFamily: "Roboto Mono"
   },
   ip: {
