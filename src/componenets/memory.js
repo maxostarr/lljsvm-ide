@@ -24,13 +24,19 @@ const useStyles = makeStyles(theme => ({
   byte: {
     marginLeft: theme.spacing(1)
   },
-  highlighted: {
+  currentByte: {
     outline: "solid",
     outlineColor: theme.palette.secondary.main,
     outlineWidth: 1
     // backgroundColor: theme.palette.secondary[900]
   },
-  highlightedPrimary: {
+  read: {
+    outline: "solid",
+    outlineColor: theme.palette.secondary.main,
+    outlineWidth: 1
+    // backgroundColor: theme.palette.secondary[900]
+  },
+  write: {
     outline: "solid",
     outlineColor: theme.palette.primary.main,
     outlineWidth: 1
@@ -53,12 +59,12 @@ function Memory({ memory, ip, readwriteaddr, readOrWrite }) {
         <span
           className={
             classes.byte +
-            (ip === byte.address ? " " + classes.highlighted : "") +
+            (ip === byte.address ? " " + classes.currentByte : "") +
             (readwriteaddr + 1 === byte.address
               ? readOrWrite === "read"
-                ? " " + classes.highlighted
+                ? " " + classes.read
                 : readOrWrite === "write"
-                ? " " + classes.highlightedPrimary
+                ? " " + classes.write
                 : ""
               : "")
           }
