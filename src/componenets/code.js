@@ -2,20 +2,18 @@ import React, { useState } from "react";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 
+import CodeLine from "./code-line";
+
 import {
   instructionLookupTable,
   registerLookupTable
 } from "../utils/instruction-lut";
-import { height } from "dom-helpers";
 
 const useStyles = makeStyles(theme => ({
   root: {
     padding: theme.spacing(3, 2),
     fontFamily: "Roboto Mono",
     minWidth: 450
-  },
-  byte: {
-    marginLeft: theme.spacing(1)
   },
   hovered: {
     outline: "solid",
@@ -47,9 +45,17 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const getRegisterName = (memory, i) => {
+  const register = registerLookupTable.find(({ name, number }) => {
+    return memory.getUint8(i).toString(16) === number.toString(16);
+  });
+
+  return register.name;
+};
+
 const Code = ({ memory, ip, setIsRunning }) => {
   const [breakpoints, setBreakpoints] = useState([]);
-  const [hoveredItem, setHoveredItem] = useState();
+  const classes = useStyles();
 
   const toggleBreakpoint = address => {
     if (breakpoints.includes(address)) {
@@ -63,7 +69,6 @@ const Code = ({ memory, ip, setIsRunning }) => {
     setIsRunning(false);
   }
 
-  const classes = useStyles();
   let zeroCount = 0;
   let parsed = [];
   for (let i = 0; i < 0x100; i++) {
@@ -83,11 +88,8 @@ const Code = ({ memory, ip, setIsRunning }) => {
     const args = instruction.args.map(({ length, type }) => {
       if (length / 8 === 1) {
         if (type === "register") {
-          const register = registerLookupTable.find(({ name, number }) => {
-            return memory.getUint8(i + 1).toString(16) === number.toString(16);
-          });
           i++;
-          return register.name;
+          return getRegisterName(memory, i);
         }
         return memory
           .getUint8(++i)
@@ -110,33 +112,15 @@ const Code = ({ memory, ip, setIsRunning }) => {
       return "";
     });
     parsed.push(
-      <div
-        onMouseEnter={() => {
-          setHoveredItem(address);
-        }}
-        onMouseLeave={() => {
-          setHoveredItem(null);
-        }}
+      <CodeLine
         key={address}
-        onClick={e => {
-          toggleBreakpoint(address);
-        }}
-        className={
-          breakpoints.includes(address)
-            ? classes.highlightedPrimary
-            : ip === address
-            ? classes.highlighted
-            : hoveredItem === address
-            ? classes.hovered
-            : " "
-        }
-      >
-        {"0x" + address.toString(16).padStart(4, "0")}:{" "}
-        <span>{instruction.name.padEnd(12, "\u00a0")} </span>
-        {args.map(arg => (
-          <span>{arg + " "}</span>
-        ))}
-      </div>
+        toggleBreakpoint={toggleBreakpoint}
+        instruction={instruction}
+        ip={ip}
+        args={args}
+        breakpoints={breakpoints}
+        address={address}
+      />
     );
   }
   return (
