@@ -24,17 +24,17 @@ const useStyles = makeStyles(theme => ({
   byte: {
     marginLeft: theme.spacing(1)
   },
-  highlightedRed: {
+  stackPointer: {
     outline: "solid",
     outlineColor: theme.palette.error.main,
     outlineWidth: 1
   },
-  highlightedGreen: {
+  framePointer: {
     outline: "solid",
     outlineColor: theme.palette.confirm[500],
     outlineWidth: 1
   },
-  doubleHighlighted: {
+  bothPointers: {
     outline: "solid",
     outlineColor: "white",
     outlineWidth: 1
@@ -57,10 +57,10 @@ function Stack({ memory, sp, fp, readwriteaddr, readOrWrite }) {
           " " +
           (sp === byte.address
             ? fp === byte.address
-              ? classes.doubleHighlighted
-              : classes.highlightedRed
+              ? classes.bothPointers
+              : classes.stackPointer
             : fp === byte.address
-            ? classes.highlightedGreen
+            ? classes.framePointer
             : "")
         }
         key={byte.address}
