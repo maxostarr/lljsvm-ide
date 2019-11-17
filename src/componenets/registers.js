@@ -38,6 +38,9 @@ const useStyles = makeStyles(theme => ({
     border: "solid",
     borderColor: theme.palette.confirm[500],
     borderWidth: 1
+  },
+  h3: {
+    marginTop: 0
   }
 }));
 
@@ -54,7 +57,12 @@ function Registers({ cpu }) {
       </div>
     );
   });
-  return <Paper className={classes.root}>{registerDisplayElems}</Paper>;
+  return (
+    <Paper className={classes.root}>
+      <h3 className={classes.h3}>Registers</h3>
+      {registerDisplayElems}
+    </Paper>
+  );
 }
 
 export default Registers;
