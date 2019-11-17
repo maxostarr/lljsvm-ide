@@ -83,6 +83,11 @@ writableBytes[i++] = 0x09;
 writableBytes[i++] = 0x0a;
 writableBytes[i++] = R8;
 
+writableBytes[i++] = instructions.MOV_REG_MEM;
+writableBytes[i++] = R8;
+writableBytes[i++] = 0x01;
+writableBytes[i++] = 0x00;
+
 writableBytes[i++] = instructions.RET;
 
 cpu.debug();
