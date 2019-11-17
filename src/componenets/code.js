@@ -7,7 +7,7 @@ import CodeLine from "./code-line";
 import {
   instructionLookupTable,
   registerLookupTable
-} from "../utils/instruction-lut";
+} from "../utils/lookup-table";
 
 const useStyles = makeStyles(theme => ({
   root: {
