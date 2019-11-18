@@ -46,10 +46,12 @@ const useStyles = makeStyles(theme => ({
 
 function Stack({ memory, sp, fp, readwriteaddr, readOrWrite }) {
   const classes = useStyles();
-  const [memoryBank, setMemoryBank] = useState((0xffff - 0x00f0) / 0x0008);
+  const [memoryBank, setMemoryBank] = useState(
+    (0xffff - 0x00f0 + 0x0001) / 0x0008
+  );
 
   const displayBytes = Array.from({ length: 0x00f0 / 0x0008 }, (_, i) => {
-    const bytes = viewMemoryAt((i + memoryBank) * 0x0008 + 0x0001, memory);
+    const bytes = viewMemoryAt((i + memoryBank) * 0x0008, memory);
     const byteSpans = bytes.bytes.map(byte => (
       <span
         className={
@@ -81,14 +83,16 @@ function Stack({ memory, sp, fp, readwriteaddr, readOrWrite }) {
       <div className={classes.controls}>
         <h3>
           Addresses: 0x
-          {(memoryBank * 0x0008 + 0x0001).toString(16).padStart(4, "0")} to 0x
-          {(memoryBank * 0x0008 + 0x00f0).toString(16).padStart(4, "0")}{" "}
+          {(memoryBank * 0x0008).toString(16).padStart(4, "0")} to 0x
+          {(memoryBank * 0x0008 + 0x00f0 - 0x0001)
+            .toString(16)
+            .padStart(4, "0")}{" "}
           <ButtonGroup color="primary">
             <Button
               variant="outlined"
               color="secondary"
               onClick={() => {
-                if (memoryBank !== 0) {
+                if (memoryBank !== 0x0002) {
                   setMemoryBank(memoryBank - 0x00f0 / 0x0008);
                 }
               }}
@@ -99,7 +103,7 @@ function Stack({ memory, sp, fp, readwriteaddr, readOrWrite }) {
               variant="outlined"
               color="secondary"
               onClick={() => {
-                if (memoryBank !== (0xffff - 0x00f0) / 0x0008) {
+                if (memoryBank !== (0xffff - 0x00f0 + 0x0001) / 0x0008) {
                   setMemoryBank(memoryBank + 0x00f0 / 0x0008);
                 }
               }}

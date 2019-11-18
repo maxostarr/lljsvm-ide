@@ -51,51 +51,50 @@ function Memory({ memory, ip, readwriteaddr, readOrWrite }) {
   const classes = useStyles();
   const [memoryBank, setMemoryBank] = useState(0);
 
-  const displayBytes = Array.from(
-    { length: 0x0100 / 0x0008 + 0x0001 },
-    (_, i) => {
-      const bytes = viewMemoryAt((i + memoryBank) * 0x0008, memory);
-      const byteSpans = bytes.bytes.map(byte => (
-        <span
-          className={
-            classes.byte +
-            (ip === byte.address ? " " + classes.currentByte : "") +
-            (readwriteaddr + 1 === byte.address
-              ? readOrWrite === "read"
-                ? " " + classes.read
-                : readOrWrite === "write"
-                ? " " + classes.write
-                : ""
-              : "")
-          }
-          key={byte.address}
-        >
-          {byte.value === "0x00" ? "----" : byte.value}
-        </span>
-      ));
-      return (
-        <div className={bytes.blockStart} key={bytes.blockStart}>
-          {bytes.blockStart}: {byteSpans}
-        </div>
-      );
-    }
-  );
+  const displayBytes = Array.from({ length: 0x00f0 / 0x0008 }, (_, i) => {
+    const bytes = viewMemoryAt((i + memoryBank) * 0x0008, memory);
+    const byteSpans = bytes.bytes.map(byte => (
+      <span
+        className={
+          classes.byte +
+          (ip === byte.address ? " " + classes.currentByte : "") +
+          (readwriteaddr + 1 === byte.address
+            ? readOrWrite === "read"
+              ? " " + classes.read
+              : readOrWrite === "write"
+              ? " " + classes.write
+              : ""
+            : "")
+        }
+        key={byte.address}
+      >
+        {byte.value === "0x00" ? "----" : byte.value}
+      </span>
+    ));
+    return (
+      <div className={bytes.blockStart} key={bytes.blockStart}>
+        {bytes.blockStart}: {byteSpans}
+      </div>
+    );
+  });
 
   return (
     <Paper className={classes.root}>
-      <h3 className={classes.h3}>Working Memeory</h3>
+      <h3 className={classes.h3}>Working Memory</h3>
       <div className={classes.controls}>
         <h3>
           Addresses: 0x
           {(memoryBank * 0x0008).toString(16).padStart(4, "0")} to 0x
-          {(memoryBank * 0x0008 + 0x0107).toString(16).padStart(4, "0")}{" "}
+          {(memoryBank * 0x0008 + 0x00f0 - 0x0001)
+            .toString(16)
+            .padStart(4, "0")}{" "}
           <ButtonGroup color="primary">
             <Button
               variant="outlined"
               color="secondary"
               onClick={() => {
                 if (memoryBank !== 0) {
-                  setMemoryBank(memoryBank - 0x0100 / 0x0008);
+                  setMemoryBank(memoryBank - 0x00f0 / 0x0008);
                 }
               }}
             >
@@ -105,8 +104,8 @@ function Memory({ memory, ip, readwriteaddr, readOrWrite }) {
               variant="outlined"
               color="secondary"
               onClick={() => {
-                if (memoryBank !== (0xffff - 0x0107) / 0x0008) {
-                  setMemoryBank(memoryBank + 0x0100 / 0x0008);
+                if (memoryBank !== (0xffff - 0x00f0 - 0x000f) / 0x0008) {
+                  setMemoryBank(memoryBank + 0x00f0 / 0x0008);
                 }
               }}
             >
