@@ -31,7 +31,7 @@ function Registers({ cpu }) {
   const classes = useStyles();
   const registerDisplayElems = cpu.registerNames.map(name => {
     return (
-      <div key={name} className={classes.register + " " + classes[name]}>
+      <div key={name} className={classes[name]}>
         {name.padEnd(3, " ")}:{" 0x"}
         {cpu
           .getRegister(name)

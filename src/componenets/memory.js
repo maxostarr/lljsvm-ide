@@ -30,18 +30,18 @@ const useStyles = makeStyles(theme => ({
     outlineWidth: 1
     // backgroundColor: theme.palette.secondary[900]
   },
-  read: {
-    outline: "solid",
-    outlineColor: theme.palette.secondary.main,
-    outlineWidth: 1
-    // backgroundColor: theme.palette.secondary[900]
-  },
-  write: {
-    outline: "solid",
-    outlineColor: theme.palette.primary.main,
-    outlineWidth: 1
-    // backgroundColor: theme.palette.secondary[900]
-  },
+  // read: {
+  //   outline: "solid",
+  //   outlineColor: theme.palette.secondary.main,
+  //   outlineWidth: 1
+  //   // backgroundColor: theme.palette.secondary[900]
+  // },
+  // write: {
+  //   outline: "solid",
+  //   outlineColor: theme.palette.primary.main,
+  //   outlineWidth: 1
+  //   // backgroundColor: theme.palette.secondary[900]
+  // },
   h3: {
     margin: 0
   }
