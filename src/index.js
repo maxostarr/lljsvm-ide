@@ -5,6 +5,7 @@ import blue from "@material-ui/core/colors/blue";
 import lime from "@material-ui/core/colors/lime";
 import red from "@material-ui/core/colors/red";
 import green from "@material-ui/core/colors/green";
+import purple from "@material-ui/core/colors/purple";
 
 import "./index.css";
 import App from "./App";
@@ -15,8 +16,9 @@ const theme = createMuiTheme({
     type: "dark",
     primary: blue,
     secondary: lime,
-    error: red,
-    confirm: green
+    ip: purple[300],
+    sp: red[500],
+    fp: green[500]
   }
 });
 

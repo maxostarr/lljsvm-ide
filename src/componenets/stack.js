@@ -26,12 +26,12 @@ const useStyles = makeStyles(theme => ({
   },
   stackPointer: {
     outline: "solid",
-    outlineColor: theme.palette.error.main,
+    outlineColor: theme.palette.sp,
     outlineWidth: 1
   },
   framePointer: {
     outline: "solid",
-    outlineColor: theme.palette.confirm[500],
+    outlineColor: theme.palette.fp,
     outlineWidth: 1
   },
   bothPointers: {

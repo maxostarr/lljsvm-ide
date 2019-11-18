@@ -9,17 +9,17 @@ const useStyles = makeStyles(theme => ({
   },
   ip: {
     border: "solid",
-    borderColor: theme.palette.secondary.main,
+    borderColor: theme.palette.ip,
     borderWidth: 1
   },
   sp: {
     border: "solid",
-    borderColor: theme.palette.error.main,
+    borderColor: theme.palette.sp,
     borderWidth: 1
   },
   fp: {
     border: "solid",
-    borderColor: theme.palette.confirm[500],
+    borderColor: theme.palette.fp,
     borderWidth: 1
   },
   h3: {
