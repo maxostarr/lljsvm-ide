@@ -88,9 +88,7 @@ function Stack({ memory, sp, fp, readwriteaddr, readOrWrite }) {
               variant="outlined"
               color="secondary"
               onClick={() => {
-                if (memoryBank === 0) {
-                  setMemoryBank(memoryBank);
-                } else {
+                if (memoryBank !== 0) {
                   setMemoryBank(memoryBank - 0x00f0 / 0x0008);
                 }
               }}
@@ -101,9 +99,7 @@ function Stack({ memory, sp, fp, readwriteaddr, readOrWrite }) {
               variant="outlined"
               color="secondary"
               onClick={() => {
-                if (memoryBank === (0xffff - 0x00f0) / 0x0008) {
-                  setMemoryBank(memoryBank);
-                } else {
+                if (memoryBank !== (0xffff - 0x00f0) / 0x0008) {
                   setMemoryBank(memoryBank + 0x00f0 / 0x0008);
                 }
               }}

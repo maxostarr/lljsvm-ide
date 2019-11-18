@@ -94,9 +94,7 @@ function Memory({ memory, ip, readwriteaddr, readOrWrite }) {
               variant="outlined"
               color="secondary"
               onClick={() => {
-                if (memoryBank === 0) {
-                  setMemoryBank(memoryBank);
-                } else {
+                if (memoryBank !== 0) {
                   setMemoryBank(memoryBank - 0x0100 / 0x0008);
                 }
               }}
@@ -107,11 +105,7 @@ function Memory({ memory, ip, readwriteaddr, readOrWrite }) {
               variant="outlined"
               color="secondary"
               onClick={() => {
-                console.log(memoryBank.toString(16));
-
-                if (memoryBank === (0xffff - 0x0107) / 0x0008) {
-                  setMemoryBank(memoryBank);
-                } else {
+                if (memoryBank !== (0xffff - 0x0107) / 0x0008) {
                   setMemoryBank(memoryBank + 0x0100 / 0x0008);
                 }
               }}
