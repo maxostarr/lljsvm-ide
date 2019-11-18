@@ -101,7 +101,7 @@ function Stack({ memory, sp, fp, readwriteaddr, readOrWrite }) {
               variant="outlined"
               color="secondary"
               onClick={() => {
-                if (memoryBank === 256 * 256) {
+                if (memoryBank === (0xffff - 0x00f0) / 0x0008) {
                   setMemoryBank(memoryBank);
                 } else {
                   setMemoryBank(memoryBank + 0x00f0 / 0x0008);
