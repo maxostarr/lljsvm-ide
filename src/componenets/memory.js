@@ -86,9 +86,9 @@ function Memory({ memory, ip, readwriteaddr, readOrWrite }) {
       <h3 className={classes.h3}>Working Memeory</h3>
       <div className={classes.controls}>
         <h3>
-          Addresses: 0x{(memoryBank * 0x0008).toString(16).padStart(4, "0")} to
-          0x
-          {(memoryBank * 0x0008 + 0x0100).toString(16).padStart(4, "0")}{" "}
+          Addresses: 0x
+          {(memoryBank * 0x0008).toString(16).padStart(4, "0")} to 0x
+          {(memoryBank * 0x0008 + 0x0107).toString(16).padStart(4, "0")}{" "}
           <ButtonGroup color="primary">
             <Button
               variant="outlined"
@@ -107,7 +107,9 @@ function Memory({ memory, ip, readwriteaddr, readOrWrite }) {
               variant="outlined"
               color="secondary"
               onClick={() => {
-                if (memoryBank === 256 * 256) {
+                console.log(memoryBank.toString(16));
+
+                if (memoryBank === (0xffff - 0x0107) / 0x0008) {
                   setMemoryBank(memoryBank);
                 } else {
                   setMemoryBank(memoryBank + 0x0100 / 0x0008);
