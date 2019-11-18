@@ -49,8 +49,6 @@ function App() {
   };
 
   const stepCPU = () => {
-    console.log("step");
-
     cpu.step();
     setMemoryState(memory);
     setStep(step + 1);
