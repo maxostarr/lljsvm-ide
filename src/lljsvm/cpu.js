@@ -34,10 +34,6 @@ class CPU {
     this.stackFrameSize = 0;
   }
 
-  setInstructionCallback(instructionCallback) {
-    this.instructionCallback = instructionCallback;
-  }
-
   debug() {
     this.registerNames.forEach(name => {
       console.log(
@@ -155,7 +151,6 @@ class CPU {
         const literal = this.fetch16();
         const register = this.fetchRegisterIndex();
         this.registers.setUint16(register, literal);
-        this.instructionCallback("MOV_LIT_REG", null);
 
         return;
       }
@@ -166,7 +161,6 @@ class CPU {
         const registerTo = this.fetchRegisterIndex();
         const value = this.registers.getUint16(registerFrom);
         this.registers.setUint16(registerTo, value);
-        this.instructionCallback("MOV_REG_REG", null);
 
         return;
       }
@@ -177,7 +171,6 @@ class CPU {
         const address = this.fetch16();
         const value = this.registers.getUint16(registerFrom);
         this.memory.setUint16(address, value);
-        this.instructionCallback("MOV_REG_MEM", address);
         return;
       }
 
@@ -187,7 +180,6 @@ class CPU {
         const registerTo = this.fetchRegisterIndex();
         const value = this.memory.getUint16(address);
         this.registers.setUint16(registerTo, value);
-        this.instructionCallback("MOV_MEM_REG", address);
 
         return;
       }
@@ -199,7 +191,6 @@ class CPU {
         const registerValue1 = this.registers.getUint16(r1 * 2);
         const registerValue2 = this.registers.getUint16(r2 * 2);
         this.setRegister("acc", registerValue1 + registerValue2);
-        this.instructionCallback("ADD_REG_REG", null);
 
         return;
       }
@@ -212,7 +203,6 @@ class CPU {
         if (value !== this.getRegister("acc")) {
           this.setRegister("ip", address);
         }
-        this.instructionCallback("JMP_NOT_EQ", null);
 
         return;
       }
