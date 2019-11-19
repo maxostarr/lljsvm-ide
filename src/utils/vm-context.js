@@ -8,25 +8,21 @@ const VMContextProvider = ({ children }) => {
   const stateObj = {
     memory,
     cpu,
-    ip: cpu
-      .getRegister("ip")
-      .toString(16)
-      .padStart(4, "0"),
-    fp: cpu
-      .getRegister("fp")
-      .toString(16)
-      .padStart(4, "0"),
-    sp: cpu
-      .getRegister("sp")
-      .toString(16)
-      .padStart(4, "0"),
+    ip: cpu.getRegister("ip"),
+    fp: cpu.getRegister("fp"),
+    sp: cpu.getRegister("sp"),
     stepCPU: () => stepCPU()
   };
 
   const [vmState, setVmState] = useState(stateObj);
   const stepCPU = () => {
     cpu.step();
-    setVmState({ ...stateObj });
+    setVmState({
+      ...stateObj,
+      ip: cpu.getRegister("ip"),
+      fp: cpu.getRegister("fp"),
+      sp: cpu.getRegister("sp")
+    });
   };
   return <VMContext.Provider value={vmState}>{children}</VMContext.Provider>;
 };
