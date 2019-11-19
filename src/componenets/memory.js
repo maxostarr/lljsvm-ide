@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
+
+import { VMContext } from "../utils/vm-context";
 
 const viewMemoryAt = (address, memory) => {
   const bytes = Array.from({ length: 8 }, (_, i) => {
@@ -47,8 +49,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Memory({ memory, ip, readwriteaddr, readOrWrite }) {
+function Memory() {
   const classes = useStyles();
+  const { memory, ip } = useContext(VMContext);
   const [memoryBank, setMemoryBank] = useState(0);
 
   const displayBytes = Array.from({ length: 0x00f0 / 0x0008 }, (_, i) => {
@@ -56,15 +59,7 @@ function Memory({ memory, ip, readwriteaddr, readOrWrite }) {
     const byteSpans = bytes.bytes.map(byte => (
       <span
         className={
-          classes.byte +
-          (ip === byte.address ? " " + classes.currentByte : "") +
-          (readwriteaddr + 1 === byte.address
-            ? readOrWrite === "read"
-              ? " " + classes.read
-              : readOrWrite === "write"
-              ? " " + classes.write
-              : ""
-            : "")
+          classes.byte + " " + (ip === byte.address ? classes.currentByte : "")
         }
         key={byte.address}
       >
