@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
+
+import { VMContext } from "../utils/vm-context";
 
 const viewMemoryAt = (address, memory) => {
   const bytes = Array.from({ length: 8 }, (_, i) => {
@@ -44,8 +46,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Stack({ memory, sp, fp, readwriteaddr, readOrWrite }) {
+function Stack() {
   const classes = useStyles();
+  const { memory, sp, fp } = useContext(VMContext);
+
   const [memoryBank, setMemoryBank] = useState(
     (0xffff - 0x00f0 + 0x0001) / 0x0008
   );

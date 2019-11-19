@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
+
+import { VMContext } from "../utils/vm-context";
 
 import CodeLine from "./code-line";
 
@@ -53,8 +55,9 @@ const getRegisterName = (memory, i) => {
   return register.name;
 };
 
-const Code = ({ memory, ip, setIsRunning }) => {
+const Code = ({ setIsRunning }) => {
   const [breakpoints, setBreakpoints] = useState([]);
+  const { memory, ip } = useContext(VMContext);
   const classes = useStyles();
 
   const toggleBreakpoint = address => {
