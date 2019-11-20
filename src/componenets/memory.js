@@ -49,9 +49,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+
 function Memory() {
   const classes = useStyles();
   const { memory, ip } = useContext(VMContext);
+
   const [memoryBank, setMemoryBank] = useState(0);
 
   const displayBytes = Array.from({ length: 0x00f0 / 0x0008 }, (_, i) => {

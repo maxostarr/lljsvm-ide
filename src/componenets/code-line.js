@@ -14,7 +14,9 @@ const useStyles = makeStyles(theme => ({
   },
   currentInstruction: {
     outline: "solid",
+
     outlineColor: theme.palette.ip,
+
     outlineWidth: 1
     // backgroundColor: theme.palette.secondary[900]
   },

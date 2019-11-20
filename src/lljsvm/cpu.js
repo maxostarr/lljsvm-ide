@@ -34,6 +34,7 @@ class CPU {
     this.stackFrameSize = 0;
   }
 
+
   debug() {
     this.registerNames.forEach(name => {
       console.log(
@@ -152,6 +153,7 @@ class CPU {
         const register = this.fetchRegisterIndex();
         this.registers.setUint16(register, literal);
 
+
         return;
       }
 
@@ -162,6 +164,7 @@ class CPU {
         const value = this.registers.getUint16(registerFrom);
         this.registers.setUint16(registerTo, value);
 
+
         return;
       }
 
@@ -171,6 +174,7 @@ class CPU {
         const address = this.fetch16();
         const value = this.registers.getUint16(registerFrom);
         this.memory.setUint16(address, value);
+
         return;
       }
 
@@ -180,6 +184,7 @@ class CPU {
         const registerTo = this.fetchRegisterIndex();
         const value = this.memory.getUint16(address);
         this.registers.setUint16(registerTo, value);
+
 
         return;
       }
@@ -192,6 +197,7 @@ class CPU {
         const registerValue2 = this.registers.getUint16(r2 * 2);
         this.setRegister("acc", registerValue1 + registerValue2);
 
+
         return;
       }
 
@@ -203,6 +209,7 @@ class CPU {
         if (value !== this.getRegister("acc")) {
           this.setRegister("ip", address);
         }
+
 
         return;
       }

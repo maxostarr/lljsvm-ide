@@ -29,6 +29,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+
 function Registers() {
   const classes = useStyles();
   const { cpu } = useContext(VMContext);
