@@ -108,6 +108,10 @@ const Code = () => {
       ({ opCode }) => opCode === opCodeRead
     );
 
+    if (!instruction) {
+      continue;
+    }
+
     const args = instruction.args.map(({ length, type }) => {
       if (length / 8 === 1) {
         if (type === "register") {
