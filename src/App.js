@@ -1,17 +1,16 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
-import useInterval from "./utils/useInterval";
 import { VMContext } from "./utils/vm-context";
 
-import Memory from "./componenets/memory";
-import Registers from "./componenets/registers";
-import Stack from "./componenets/stack";
-import Code from "./componenets/code";
-import TopBar from "./componenets/top-bar";
+import Memory from "./components/memory";
+import Registers from "./components/registers";
+import Stack from "./components/stack";
+import Code from "./components/code";
+import TopBar from "./components/top-bar";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -75,4 +74,3 @@ function App() {
 }
 
 export default App;
-
