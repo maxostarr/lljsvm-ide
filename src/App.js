@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
@@ -50,6 +50,32 @@ function App() {
     setFp(cpu.getRegister("fp"));
   };
 
+  useEffect(() => {
+    document.addEventListener(
+      "keydown",
+      e => {
+        if (e.key === "Enter") {
+          console.log({ step });
+
+          stepCPU();
+        }
+      },
+      false
+    );
+
+    return () => {
+      document.removeEventListener(
+        "keydown",
+        e => {
+          if (e.key === "Enter") {
+            stepCPU();
+          }
+        },
+        false
+      );
+    };
+  }, []);
+
   useInterval(() => {
     if (isRunning) {
       stepCPU();
@@ -77,12 +103,12 @@ function App() {
         <Grid item xs={12}>
           <Grid
             container
-            onKeyPress={e => {
-              if (e.key === "Enter") {
-                stepCPU();
-              }
-            }}
-            tabIndex={-1}
+            // onKeyPress={e => {
+            //   if (e.key === "Enter") {
+            //     stepCPU();
+            //   }
+            // }}
+            // tabIndex={-1}
           >
             <Grid item xs={1}>
               <h3>Step: {step}</h3>
