@@ -1,3 +1,4 @@
+
 import React from "react";
 import ReactDOM from "react-dom";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
@@ -6,6 +7,8 @@ import lime from "@material-ui/core/colors/lime";
 import red from "@material-ui/core/colors/red";
 import green from "@material-ui/core/colors/green";
 import purple from "@material-ui/core/colors/purple";
+
+import VMContextProvider, { VMContext } from "./utils/vm-context";
 
 import "./index.css";
 import App from "./App";
@@ -25,7 +28,9 @@ const theme = createMuiTheme({
 function Themed() {
   return (
     <ThemeProvider theme={theme}>
-      <App />
+      <VMContextProvider>
+        <App />
+      </VMContextProvider>
     </ThemeProvider>
   );
 }
@@ -36,3 +41,4 @@ ReactDOM.render(<Themed />, document.getElementById("root"));
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
+

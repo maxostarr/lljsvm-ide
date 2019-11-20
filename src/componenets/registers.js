@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
+
+import { VMContext } from "../utils/vm-context";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -27,8 +29,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Registers({ cpu }) {
+
+function Registers() {
   const classes = useStyles();
+  const { cpu } = useContext(VMContext);
+
   const registerDisplayElems = cpu.registerNames.map(name => {
     return (
       <div key={name} className={classes[name]}>
