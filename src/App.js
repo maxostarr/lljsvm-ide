@@ -22,19 +22,19 @@ const useStyles = makeStyles(theme => ({
 
 function App() {
   const classes = useStyles();
-  const vm = useContext(VMContext);
+  const { stepCPU } = useContext(VMContext);
 
   useEffect(() => {
-    document.addEventListener("keydown", e => {
+    window.addEventListener("keydown", e => {
       if (e.key === "Enter") {
-        vm.stepCPU();
+        stepCPU();
       }
     });
 
     return () => {
-      document.removeEventListener("keydown", e => {
+      window.removeEventListener("keydown", e => {
         if (e.key === "Enter") {
-          vm.stepCPU();
+          stepCPU();
         }
       });
     };
