@@ -28,7 +28,6 @@ function Themed() {
   return (
     <ThemeProvider theme={theme}>
       <VMContextProvider>
-        <VMContext.Consumer>{test => console.log(test)}</VMContext.Consumer>
         <App />
       </VMContextProvider>
     </ThemeProvider>

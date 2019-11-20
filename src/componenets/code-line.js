@@ -47,6 +47,7 @@ const CodeLine = ({
 
   return (
     <div
+      key={address}
       onClick={e => {
         toggleBreakpoint(address);
       }}
@@ -69,7 +70,7 @@ const CodeLine = ({
       {"0x" + address.toString(16).padStart(4, "0")}:{" "}
       <span>{instruction.name.padEnd(12, "\u00a0")} </span>
       {args.map(arg => (
-        <span>{arg.padEnd(8, "\u00a0")}</span>
+        <span key={arg}>{arg.padEnd(8, "\u00a0")}</span>
       ))}
     </div>
   );

@@ -80,7 +80,7 @@ const Code = ({ setIsRunning }) => {
     if (opCodeRead === 0x00) {
       zeroCount++;
       if (zeroCount === 5) {
-        parsed.push(<div className={classes.divider}></div>);
+        parsed.push(<div key={address} className={classes.divider}></div>);
       }
       continue;
     }
