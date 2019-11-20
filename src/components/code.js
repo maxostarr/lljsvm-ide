@@ -152,7 +152,7 @@ const Code = () => {
   }
   return (
     <Paper className={classes.root}>
-      <h3 className={classes.h3}>Machine Code</h3>
+      <h3 className={classes.h3}>Assembly Code</h3>
       <div className={classes.controls}>
         <TextField
           id="start"
