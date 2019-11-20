@@ -17,6 +17,7 @@ const VMContextProvider = ({ children }) => {
   const [vmState, setVmState] = useState(stateObj);
   const stepCPU = () => {
     cpu.step();
+
     setVmState({
       ...stateObj,
       ip: cpu.getRegister("ip"),

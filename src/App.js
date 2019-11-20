@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
@@ -29,6 +29,22 @@ function App() {
   const classes = useStyles();
   const vm = useContext(VMContext);
 
+  useEffect(() => {
+    document.addEventListener("keydown", e => {
+      if (e.key === "Enter") {
+        vm.stepCPU();
+      }
+    });
+
+    return () => {
+      document.removeEventListener("keydown", e => {
+        if (e.key === "Enter") {
+          vm.stepCPU();
+        }
+      });
+    };
+  }, []);
+
   // const [memoryState, setMemoryState] = useState(memory);
   // const [step, setStep] = useState(0);
   // const [ip, setIp] = useState(cpu.getRegister("ip"));
@@ -52,19 +68,8 @@ function App() {
       <CssBaseline />
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Grid
-            container
-            onKeyPress={e => {
-              if (e.key === "Enter") {
-                vm.stepCPU();
-              }
-            }}
-            tabIndex={-1}
-          >
-            <Grid item xs={1}>
-              {/* <h3>Step: {step}</h3> */}
-            </Grid>
-            <Grid item xs={1}>
+          <Grid container>
+            <Grid item xs={12}>
               <Button
                 color="primary"
                 variant="outlined"
