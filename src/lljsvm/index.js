@@ -79,14 +79,14 @@ writableBytes[i++] = 0x08;
 writableBytes[i++] = R1;
 
 writableBytes[i++] = instructions.MOV_LIT_REG;
-writableBytes[i++] = 0x09;
-writableBytes[i++] = 0x0a;
+writableBytes[i++] = 0x10;
+writableBytes[i++] = 0x00;
 writableBytes[i++] = R8;
 
 writableBytes[i++] = instructions.MOV_REG_MEM;
 writableBytes[i++] = R8;
-writableBytes[i++] = 0x01;
 writableBytes[i++] = 0x00;
+writableBytes[i++] = 0x30;
 
 writableBytes[i++] = instructions.RET;
 
