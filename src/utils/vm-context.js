@@ -15,6 +15,7 @@ const VMContextProvider = ({ children }) => {
   };
 
   const [vmState, setVmState] = useState(stateObj);
+  const [isRunning, setIsRunning] = useState(false);
   const stepCPU = () => {
     cpu.step();
 
@@ -25,7 +26,11 @@ const VMContextProvider = ({ children }) => {
       sp: cpu.getRegister("sp")
     });
   };
-  return <VMContext.Provider value={vmState}>{children}</VMContext.Provider>;
+  return (
+    <VMContext.Provider value={{ ...vmState, setIsRunning, isRunning }}>
+      {children}
+    </VMContext.Provider>
+  );
 };
 
 export default VMContextProvider;
