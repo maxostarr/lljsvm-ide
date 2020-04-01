@@ -11,14 +11,34 @@ import {
 const styles = (theme: Theme) =>
   createStyles({
     line: {
-      display: "flex"
+      display: "flex",
+      flexGrow: 1,
+      fontFamily: "Roboto Mono"
     },
-    byte: {},
+    byte: {
+      flexGrow: 1
+    },
     address: {
-      display: "inline"
+      display: "inline-flex",
+      flexGrow: 0.2,
+      backgroundColor: theme.palette.grey[800],
+      justifyContent: "center",
+      alignItems: "center"
     },
     byteContainer: {
-      display: "inline"
+      display: "inline-flex",
+      flexGrow: 1,
+      textAlign: "center",
+      justifyContent: "center",
+      alignItems: "center"
+    },
+    byteContainerB: {
+      display: "inline-flex",
+      flexGrow: 1,
+      textAlign: "center",
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: theme.palette.grey[500]
     }
   });
 
@@ -29,14 +49,22 @@ interface Props extends WithStyles<typeof styles> {
 
 export const MemoryLine = withStyles(styles)(
   ({ classes, address, bytes }: Props) => {
-    const byteSpans = bytes.map(byte => {
-      return <span className={classes.byte}></span>;
+    const byteSpans = bytes.map((byte, i) => {
+      return <span className={classes.byte}>{byte}</span>;
     });
 
     return (
       <div className={classes.line}>
-        <div className={classes.address}>{address}</div>
-        <div className={classes.byteContainer}>{byteSpans}</div>
+        <div className={classes.address}>
+          {address.toString(16).padStart(4, "0")}
+        </div>
+        <div
+          className={
+            address % 16 === 0 ? classes.byteContainer : classes.byteContainerB
+          }
+        >
+          {byteSpans}
+        </div>
       </div>
     );
   }

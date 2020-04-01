@@ -23,6 +23,8 @@ const styles = (theme: Theme) =>
     },
     memory: {
       flexGrow: 1,
+      display: "flex",
+      flexDirection: "column",
       backgroundColor: theme.palette.grey[600]
     }
   });
@@ -31,7 +33,15 @@ interface Props extends WithStyles<typeof styles> {}
 
 export const Memory = withStyles(styles)(({ classes }: Props) => {
   const memoryLines = Array.from({ length: 16 }, (_, i) => {
-    return <MemoryLine address={i * 8} bytes={cpu.viewMemoryAt(i * 8, 8)} />;
+    console.log(cpu.viewMemoryAt(i * 8, 8));
+
+    return (
+      <MemoryLine
+        key={i * 8}
+        address={i * 8}
+        bytes={cpu.viewMemoryAt(i * 8, 8)}
+      />
+    );
   });
 
   return (
