@@ -33,8 +33,6 @@ interface Props extends WithStyles<typeof styles> {}
 
 export const Memory = withStyles(styles)(({ classes }: Props) => {
   const memoryLines = Array.from({ length: 16 }, (_, i) => {
-    console.log(cpu.viewMemoryAt(i * 8, 8));
-
     return (
       <MemoryLine
         key={i * 8}
