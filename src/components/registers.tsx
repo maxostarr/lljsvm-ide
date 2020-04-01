@@ -38,7 +38,13 @@ interface Props extends WithStyles<typeof styles> {}
 export const Registers = withStyles(styles)(({ classes }: Props) => {
   const registers = cpu.registerNames.map(name => {
     return (
-      <div className={classes.registerLine}>{name.padEnd(4, "\u00a0")}: 0x</div>
+      <div className={classes.registerLine}>
+        {name.padEnd(4, "\u00a0")}: 0x
+        {cpu
+          .getRegister(name)
+          .toString(16)
+          .padStart(4, "0")}
+      </div>
     );
   });
 
