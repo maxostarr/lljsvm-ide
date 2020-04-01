@@ -22,7 +22,7 @@ const styles = (theme: Theme) =>
     },
     output: {
       flexGrow: 1,
-      backgroundColor: theme.palette.grey[600]
+      backgroundColor: "black"
     }
   });
 
