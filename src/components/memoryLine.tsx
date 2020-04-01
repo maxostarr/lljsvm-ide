@@ -50,7 +50,9 @@ interface Props extends WithStyles<typeof styles> {
 export const MemoryLine = withStyles(styles)(
   ({ classes, address, bytes }: Props) => {
     const byteSpans = bytes.map((byte, i) => {
-      return <span className={classes.byte}>{byte}</span>;
+      return (
+        <span className={classes.byte}>{byte != "0x00" ? byte : "----"}</span>
+      );
     });
 
     return (
