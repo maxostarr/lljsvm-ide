@@ -15,6 +15,7 @@ const styles = (theme: Theme) =>
       display: "grid",
       gridTemplateColumns: "20vw 50vw 30vw",
       gridTemplateRows: "repeat(6, 1fr)",
+      overflow: "hidden",
       gridTemplateAreas:
         "'screen editor memory'  'screen editor memory' 'registers editor memory' 'registers editor stack' 'registers editor stack' 'registers editor stack'"
     },
