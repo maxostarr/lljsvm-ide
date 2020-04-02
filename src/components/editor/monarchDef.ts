@@ -4,6 +4,7 @@ import monaco from "monaco-editor";
 interface MonarchLanguageConfiguration
   extends monaco.languages.IMonarchLanguage {
   keywords: string[];
+  moduleKeywords: string[];
   typeKeywords: string[];
   instructions: string[];
   registers: string[];
@@ -20,13 +21,15 @@ export const lljsasmDefs: MonarchLanguageConfiguration = {
   ],
   keywords: [
     "import",
-    "module",
+    "structure",
     "constant",
     "place_at",
     "data_structure",
     "routine_size",
     "structure_size",
   ],
+
+  moduleKeywords: ["module", "parameters"],
 
   typeKeywords: ["data16"],
 
@@ -40,20 +43,23 @@ export const lljsasmDefs: MonarchLanguageConfiguration = {
       { include: "@strings" },
       { include: "@numbers" },
       [/[,:;]/, "delimiter"],
-      [/[{}\[\]()]/, "@brackets"],
+      [/[{}[\]()]/, "@brackets"],
 
-      [/[A-Z][\w\$]*/, "type.identifier"], // to show class names nicely
+      // [/[A-Z][\w\$]*/, "type.identifier"], // to show class names nicely
 
-      [/@[a-zA-Z]\w*/, "tag"],
+      // [/@[a-zA-Z]\w*/, "tag"],
+      [/(\w+)(:$)/, ["routine", "identifier"]],
+      [/!\w+/, "helper"],
 
       [
         /[a-zA-Z]\w*/,
         {
           cases: {
+            "@moduleKeywords": "keyword.module",
             "@keywords": "keyword",
             "@typeKeywords": "type",
-            "@registers": "keyword",
-            "@instructions": "keyword",
+            "@registers": "register",
+            "@instructions": "instruction",
             "@default": "identifier",
           },
         },
@@ -80,7 +86,7 @@ export const lljsasmDefs: MonarchLanguageConfiguration = {
 
     // Recognize hex, negatives, decimals, imaginaries, longs, and scientific notation
     numbers: [
-      [/[&\*\$#]([abcdef]|[ABCDEF]|\d)+/, "number.hex"],
+      [/[&\*\$#]([abcdef]|[ABCDEF]|\d)+/, "number"],
       // [/-?(\d*\.)?\d+([eE][+\-]?\d+)?[jJ]?[lL]?/, 'number'],
     ],
 
