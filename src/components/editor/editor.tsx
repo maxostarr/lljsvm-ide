@@ -6,9 +6,10 @@ import {
   WithStyles,
   createStyles,
   withStyles,
-  Theme
+  Theme,
 } from "@material-ui/core";
 import Editor from "@monaco-editor/react";
+import Example from "./exampleCode";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -16,18 +17,13 @@ const styles = (theme: Theme) =>
       display: "flex",
       flexDirection: "column",
       width: "100%",
-      height: "100%"
+      height: "100%",
     },
     title: {
       // height: "1fc"
       // width: "90%",
-      padding: theme.spacing(1)
+      padding: theme.spacing(1),
     },
-    editorContainer: {
-      // height: "100%",
-      // width: "90%",
-      flexGrow: 1
-    }
   });
 
 interface Props extends WithStyles<typeof styles> {}
@@ -38,9 +34,7 @@ export const EditorComponent = withStyles(styles)(({ classes }: Props) => {
       <Paper className={classes.title}>
         <Typography variant="h4">Editor</Typography>
       </Paper>
-      <div className={classes.editorContainer}>
-        <Editor language="javascript" />
-      </div>
+      <Editor theme="dark" language="mips" value={Example} />
     </div>
   );
 });
