@@ -11,6 +11,16 @@ import {
 import Editor from "@monaco-editor/react";
 import Example from "./exampleCode";
 
+import { monaco } from "@monaco-editor/react";
+import { lljsasmDefs } from "./monarchDef";
+monaco
+  .init()
+  .then(monacoInstance => {
+    monacoInstance.languages.register({ id: "lljsasm" });
+    monacoInstance.languages.setMonarchTokensProvider("lljsasm", lljsasmDefs);
+  })
+  .catch(console.log);
+
 const styles = (theme: Theme) =>
   createStyles({
     container: {
@@ -34,7 +44,7 @@ export const EditorComponent = withStyles(styles)(({ classes }: Props) => {
       <Paper className={classes.title}>
         <Typography variant="h4">Editor</Typography>
       </Paper>
-      <Editor theme="dark" language="mips" value={Example} />
+      <Editor theme="dark" language="lljsasm" value={Example} />
     </div>
   );
 });
