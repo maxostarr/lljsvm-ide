@@ -1,76 +1,63 @@
-import React, { useContext, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Link from "@material-ui/core/Link";
-import CssBaseline from "@material-ui/core/CssBaseline";
+import React, { useState } from "react";
+import Sim from './Sim';
+import VMContextProvider, {initVM} from './utils/vm-context';
 
-import { VMContext } from "./utils/vm-context";
+const states = {
+  LOAD_PROGRAM: 0,
+  SIMULATOR: 1
+};
 
-import Memory from "./components/memory";
-import Registers from "./components/registers";
-import Stack from "./components/stack";
-import Code from "./components/code";
-import TopBar from "./components/top-bar";
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-    padding: 10
-  }
-}));
-
-function App() {
-  const classes = useStyles();
-  const { stepCPU } = useContext(VMContext);
-
-  useEffect(() => {
-    window.addEventListener("keydown", e => {
-      if (e.key === "Enter") {
-        stepCPU();
-      }
-    });
-
-    return () => {
-      window.removeEventListener("keydown", e => {
-        if (e.key === "Enter") {
-          stepCPU();
-        }
-      });
-    };
-  }, []);
+const ProgramLoader = ({onLoadProgram}) => {
+  const [programText, setProgramText] = useState('');
 
   return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <TopBar />
-        </Grid>
-        <Grid item xs={3}>
-          <Memory />
-        </Grid>
-        <Grid item xs={1}>
-          <Registers />
-        </Grid>
-        <Grid item xs={3}>
-          <Stack />
-        </Grid>
-        <Grid item xs={1}>
-          <Code />
-        </Grid>
-        <Grid item xs={12}>
-          <p>
-            By Max Starr. Based on the{" "}
-            <Link href="https://github.com/LowLevelJavaScript/16-Bit-Virtual-Machine">
-              lljsvm project
-            </Link>
-            . The repo for this project can be found{" "}
-            <Link href="https://github.com/manmon42/lljsvm-ide">here</Link>
-          </p>
-        </Grid>
-      </Grid>
+    <div style={{ margin: 30 }}>
+      <h1>Load program</h1>
+      <p>
+        Paste space-separated machine code values (in decimal) and click "Start VM"
+      </p>
+      <textarea
+        value={programText}
+        rows={40}
+        cols={100}
+        onChange={e => {
+          setProgramText(e.target.value);
+        }}
+      />
+      <br/>
+      <button
+        onClick={() => {
+          const bytes = programText.split(' ').map(x => Number(x));
+          onLoadProgram(bytes);
+        }}
+      >Start VM</button>
     </div>
   );
+}
+
+function App() {
+  const [appState, setAppState] = useState(states.LOAD_PROGRAM);
+
+  switch (appState) {
+    case states.LOAD_PROGRAM: return (
+      <ProgramLoader
+        onLoadProgram={program => {
+          initVM(program);
+          setAppState(states.SIMULATOR);
+        }}
+      />
+    );
+
+    case states.SIMULATOR: return (
+      <VMContextProvider>
+        <Sim />
+      </VMContextProvider>
+    );
+
+    default: return (
+      <div>This doesn't make much sense</div>
+    )
+  }
 }
 
 export default App;

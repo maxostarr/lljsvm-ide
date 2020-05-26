@@ -8,8 +8,6 @@ import red from "@material-ui/core/colors/red";
 import green from "@material-ui/core/colors/green";
 import purple from "@material-ui/core/colors/purple";
 
-import VMContextProvider, { VMContext } from "./utils/vm-context";
-
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
@@ -28,9 +26,7 @@ const theme = createMuiTheme({
 function Themed() {
   return (
     <ThemeProvider theme={theme}>
-      <VMContextProvider>
-        <App />
-      </VMContextProvider>
+      <App />
     </ThemeProvider>
   );
 }
