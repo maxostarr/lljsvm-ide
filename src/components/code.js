@@ -112,11 +112,21 @@ const Code = () => {
       continue;
     }
 
+    let instructionProbablyData = false;
     const args = instruction.args.map(({ length, type }) => {
       if (length / 8 === 1) {
         if (type === "register") {
           i++;
-          return getRegisterName(memory, i);
+          try {
+            return getRegisterName(memory, i);
+          } catch (ex) {
+            // probably tried to parse data as code, just abandon ship
+            // left this an X in case you want the option to render it as
+            // an "instruction" anyway (could be useful for weird polymorphic
+            // programs)
+            instructionProbablyData = true;
+            return 'X';
+          }
         }
         return memory
           .getUint8(++i)
@@ -138,6 +148,11 @@ const Code = () => {
       }
       return "";
     });
+
+    if (instructionProbablyData) {
+      continue;
+    }
+
     parsed.push(
       <CodeLine
         key={address}
