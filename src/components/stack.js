@@ -76,7 +76,7 @@ function Stack() {
     ));
     return (
       <div className={bytes.blockStart} key={bytes.blockStart}>
-        {bytes.blockStart}: {byteSpans}
+        <strong>{bytes.blockStart}</strong>: {byteSpans}
       </div>
     );
   });
