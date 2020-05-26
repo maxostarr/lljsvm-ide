@@ -46,7 +46,7 @@ export default () => {
         <TextField
           id="outlined-basic"
           className={classes.textField}
-          label="Run Speed"
+          label="Run Delay (ms)"
           variant="outlined"
           value={runSpeed}
           onChange={handleChange}
