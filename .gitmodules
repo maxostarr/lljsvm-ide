@@ -1,0 +1,3 @@
+[submodule "src/lljsvm"]
+	path = src/lljsvm
+	url = https://github.com/LowLevelJavaScript/16-Bit-Virtual-Machine
