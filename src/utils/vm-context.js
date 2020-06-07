@@ -1,29 +1,34 @@
 import React, { useState } from "react";
 
-import { cpu, memory } from "../lljsvm/index";
+import { createVM } from "../lljsvm/index";
+
+let vm;
 
 export const VMContext = React.createContext();
+export const initVM = program => {
+  vm = createVM(program);
+}
 
 const VMContextProvider = ({ children }) => {
   const stateObj = {
-    memory,
-    cpu,
-    ip: cpu.getRegister("ip"),
-    fp: cpu.getRegister("fp"),
-    sp: cpu.getRegister("sp"),
+    memory: vm.memory,
+    cpu: vm.cpu,
+    ip: vm.cpu.getRegister("ip"),
+    fp: vm.cpu.getRegister("fp"),
+    sp: vm.cpu.getRegister("sp"),
     stepCPU: () => stepCPU()
   };
 
   const [vmState, setVmState] = useState(stateObj);
   const [isRunning, setIsRunning] = useState(false);
   const stepCPU = () => {
-    cpu.step();
+    vm.cpu.step();
 
     setVmState({
       ...stateObj,
-      ip: cpu.getRegister("ip"),
-      fp: cpu.getRegister("fp"),
-      sp: cpu.getRegister("sp")
+      ip: vm.cpu.getRegister("ip"),
+      fp: vm.cpu.getRegister("fp"),
+      sp: vm.cpu.getRegister("sp")
     });
   };
   return (
