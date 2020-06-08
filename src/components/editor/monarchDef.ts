@@ -1,6 +1,8 @@
 // import { monaco } from "@monaco-editor/react";
 // monaco.config;
+// import { monaco } from "@monaco-editor/react";
 import monaco from "monaco-editor";
+
 interface MonarchLanguageConfiguration
   extends monaco.languages.IMonarchLanguage {
   keywords: string[];
@@ -12,7 +14,7 @@ interface MonarchLanguageConfiguration
 
 export const lljsasmDefs: MonarchLanguageConfiguration = {
   defaultToken: "",
-  tokenPostfix: ".python",
+  tokenPostfix: ".lljsasm",
 
   brackets: [
     { open: "{", close: "}", token: "delimiter.curly" },

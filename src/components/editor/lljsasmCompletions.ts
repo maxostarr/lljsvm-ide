@@ -1,22 +1,33 @@
-import monaco from "monaco-editor";
+// import { monaco } from "@monaco-editor/react";
+import * as monaco from "monaco-editor";
 
-const provideCompletionItems: monaco.languages.ProviderResult<monaco.languages.CompletionList> = (
+export const provideCompletionItems = (
   model: monaco.editor.ITextModel,
   position: monaco.Position,
   context: monaco.languages.CompletionContext,
   token: monaco.CancellationToken,
-) => {
+): monaco.languages.ProviderResult<monaco.languages.CompletionList> => {
+  var word = model.getWordUntilPosition(position);
+  var range = {
+    startLineNumber: position.lineNumber,
+    endLineNumber: position.lineNumber,
+    startColumn: word.startColumn,
+    endColumn: word.endColumn,
+  };
   return {
     suggestions: [
       {
-        label: "test",
+        label: '"mov"',
         kind: monaco.languages.CompletionItemKind.Class,
-        insertText: "test",
+        documentation: "The base move mnemonic.",
+        detail: "The base move mnemonic.",
+        insertText: '"mov"',
+        range: range,
       },
     ],
   };
 };
 
 export const completionProvidor: monaco.languages.CompletionItemProvider = {
-  provideCompletionItems: provideCompletionItems,
+  provideCompletionItems,
 };
