@@ -4,10 +4,10 @@ import {
   WithStyles,
   createStyles,
   withStyles,
-  Theme
+  Theme,
 } from "@material-ui/core";
 import { Screen, Registers, Editor, Stack, Memory } from "./components/index";
-
+import VMContextProvider from "./utils/vmContext";
 const styles = (theme: Theme) =>
   createStyles({
     containter: {
@@ -17,35 +17,35 @@ const styles = (theme: Theme) =>
       gridTemplateRows: "repeat(6, 1fr)",
       overflow: "hidden",
       gridTemplateAreas:
-        "'screen editor memory'  'screen editor memory' 'registers editor memory' 'registers editor stack' 'registers editor stack' 'registers editor stack'"
+        "'screen editor memory'  'screen editor memory' 'registers editor memory' 'registers editor stack' 'registers editor stack' 'registers editor stack'",
     },
     screen: {
       gridArea: "screen",
-      height: "100%"
+      height: "100%",
     },
     registers: {
       gridArea: "registers",
-      height: "100%"
+      height: "100%",
     },
     editor: {
       gridArea: "editor",
-      height: "100%"
+      height: "100%",
     },
     memory: {
       gridArea: "memory",
-      height: "100%"
+      height: "100%",
     },
     stack: {
       gridArea: "stack",
-      height: "100%"
-    }
+      height: "100%",
+    },
   });
 
 interface Props extends WithStyles<typeof styles> {}
 
 const App = withStyles(styles)(({ classes }: Props) => {
   return (
-    <>
+    <VMContextProvider>
       <CssBaseline />
       <div className={classes.containter}>
         <div className={classes.screen}>
@@ -64,7 +64,7 @@ const App = withStyles(styles)(({ classes }: Props) => {
           <Stack />
         </div>
       </div>
-    </>
+    </VMContextProvider>
   );
 });
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Paper,
   Typography,
@@ -8,7 +8,7 @@ import {
   withStyles,
   Theme,
 } from "@material-ui/core";
-import { cpu } from "../lljsvm/episode-10/index";
+import { VMContext } from "../utils/vmContext";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -36,7 +36,8 @@ const styles = (theme: Theme) =>
 interface Props extends WithStyles<typeof styles> {}
 
 export const Registers = withStyles(styles)(({ classes }: Props) => {
-  const registers = cpu.registerNames.map((name) => {
+  const { cpu } = useContext(VMContext);
+  const registers = cpu.registerNames.map((name: string) => {
     return (
       <div className={classes.registerLine}>
         {name.padEnd(4, "\u00a0")}: 0x
