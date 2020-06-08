@@ -6,44 +6,41 @@ import {
   WithStyles,
   createStyles,
   withStyles,
-  Theme
+  Theme,
 } from "@material-ui/core";
-import { cpu } from "../16-Bit-Virtual-Machine/episode-6/index";
+import { cpu } from "../lljsvm/episode-10/index";
 
 const styles = (theme: Theme) =>
   createStyles({
     container: {
       display: "flex",
       flexDirection: "column",
-      height: "100%"
+      height: "100%",
     },
     title: {
       // height: "1fc"
-      padding: theme.spacing(1)
+      padding: theme.spacing(1),
     },
     registers: {
       flexGrow: 1,
       backgroundColor: theme.palette.grey[600],
       display: "grid",
-      padding: theme.spacing(3)
+      padding: theme.spacing(3),
     },
     registerLine: {
       fontSize: theme.typography.fontSize * 2,
-      fontFamily: "Roboto Mono"
-    }
+      fontFamily: "Roboto Mono",
+    },
   });
 
 interface Props extends WithStyles<typeof styles> {}
 
 export const Registers = withStyles(styles)(({ classes }: Props) => {
-  const registers = cpu.registerNames.map(name => {
+  const registers = cpu.registerNames.map((name) => {
     return (
       <div className={classes.registerLine}>
         {name.padEnd(4, "\u00a0")}: 0x
-        {cpu
-          .getRegister(name)
-          .toString(16)
-          .padStart(4, "0")}
+        {cpu.getRegister(name).toString(16).padStart(4, "0")}
       </div>
     );
   });

@@ -6,9 +6,9 @@ import {
   WithStyles,
   createStyles,
   withStyles,
-  Theme
+  Theme,
 } from "@material-ui/core";
-import { cpu } from "../16-Bit-Virtual-Machine/episode-6/index";
+import { cpu } from "../lljsvm/episode-10/index";
 import { MemoryLine } from "./memoryLine";
 
 const styles = (theme: Theme) =>
@@ -16,17 +16,17 @@ const styles = (theme: Theme) =>
     container: {
       display: "flex",
       flexDirection: "column",
-      height: "100%"
+      height: "100%",
     },
     title: {
-      padding: theme.spacing(1)
+      padding: theme.spacing(1),
     },
     memory: {
       flexGrow: 1,
       display: "flex",
       flexDirection: "column",
-      backgroundColor: theme.palette.grey[600]
-    }
+      backgroundColor: theme.palette.grey[600],
+    },
   });
 
 interface Props extends WithStyles<typeof styles> {}
