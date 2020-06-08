@@ -88,7 +88,7 @@ export const lljsasmDefs: MonarchLanguageConfiguration = {
 
     // Recognize hex, negatives, decimals, imaginaries, longs, and scientific notation
     numbers: [
-      [/[&\*\$#]([abcdef]|[ABCDEF]|\d)+/, "number"],
+      [/[&*$#]([abcdef]|[ABCDEF]|\d)+/, "number"],
       // [/-?(\d*\.)?\d+([eE][+\-]?\d+)?[jJ]?[lL]?/, 'number'],
     ],
 

@@ -1,36 +1,29 @@
 import React from "react";
-import {
-  Typography,
-  Card,
-  WithStyles,
-  createStyles,
-  withStyles,
-  Theme
-} from "@material-ui/core";
+import { WithStyles, createStyles, withStyles, Theme } from "@material-ui/core";
 
 const styles = (theme: Theme) =>
   createStyles({
     line: {
       display: "flex",
       flexGrow: 1,
-      fontFamily: "Roboto Mono"
+      fontFamily: "Roboto Mono",
     },
     byte: {
-      flexGrow: 1
+      flexGrow: 1,
     },
     address: {
       display: "inline-flex",
       flexGrow: 0.2,
       backgroundColor: theme.palette.grey[800],
       justifyContent: "center",
-      alignItems: "center"
+      alignItems: "center",
     },
     byteContainer: {
       display: "inline-flex",
       flexGrow: 1,
       textAlign: "center",
       justifyContent: "center",
-      alignItems: "center"
+      alignItems: "center",
     },
     byteContainerB: {
       display: "inline-flex",
@@ -38,8 +31,8 @@ const styles = (theme: Theme) =>
       textAlign: "center",
       justifyContent: "center",
       alignItems: "center",
-      backgroundColor: theme.palette.grey[500]
-    }
+      backgroundColor: theme.palette.grey[500],
+    },
   });
 
 interface Props extends WithStyles<typeof styles> {
@@ -49,9 +42,9 @@ interface Props extends WithStyles<typeof styles> {
 
 export const MemoryLine = withStyles(styles)(
   ({ classes, address, bytes }: Props) => {
-    const byteSpans = bytes.map((byte, i) => {
+    const byteSpans = bytes.map((byte) => {
       return (
-        <span className={classes.byte}>{byte != "0x00" ? byte : "----"}</span>
+        <span className={classes.byte}>{byte !== "0x00" ? byte : "----"}</span>
       );
     });
 
@@ -69,5 +62,5 @@ export const MemoryLine = withStyles(styles)(
         </div>
       </div>
     );
-  }
+  },
 );

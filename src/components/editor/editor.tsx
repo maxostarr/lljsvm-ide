@@ -3,7 +3,6 @@ import {
   Paper,
   Typography,
   Button,
-  ButtonGroup,
   WithStyles,
   createStyles,
   withStyles,

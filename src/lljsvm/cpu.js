@@ -615,6 +615,10 @@ class CPU {
       case instructions.HLT: {
         return true;
       }
+
+      default: {
+        return true;
+      }
     }
   }
 

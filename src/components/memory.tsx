@@ -47,7 +47,7 @@ const styles = (theme: Theme) =>
 interface Props extends WithStyles<typeof styles> {}
 
 export const Memory = withStyles(styles)(({ classes }: Props) => {
-  const { memory, ip } = useContext(VMContext);
+  const { memory } = useContext(VMContext);
   const [memoryBank, setMemoryBank] = useState(0);
 
   const memoryLines = Array.from({ length: 16 }, (_, i) => {

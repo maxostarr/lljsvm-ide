@@ -47,7 +47,7 @@ const styles = (theme: Theme) =>
 interface Props extends WithStyles<typeof styles> {}
 
 export const Stack = withStyles(styles)(({ classes }: Props) => {
-  const { memory, ip } = useContext(VMContext);
+  const { memory } = useContext(VMContext);
   const [memoryBank, setMemoryBank] = useState(
     (0xffff - 0x0080 + 0x0001) / 0x0008,
   );
