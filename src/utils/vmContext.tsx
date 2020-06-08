@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { createVM } from "../lljsvm/episode-10/index";
+import { createVM } from "../lljsvm/index";
 
 let vm: any;
 
