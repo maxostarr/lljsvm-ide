@@ -1,6 +1,6 @@
 // const readline = require("readline");
-const createMemory = require("./create-memory");
-const CPU = require("./cpu");
+import CPU from "./cpu";
+import createMemory from "./create-memory";
 // const instructions = require("./instructions");
 // const MemoryMapper = require("./memory-mapper.js");
 // const createScreenDevice = require("./screen-device");

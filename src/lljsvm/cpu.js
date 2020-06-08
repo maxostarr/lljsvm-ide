@@ -1,6 +1,5 @@
-const createMemory = require("./create-memory");
-
-const instructions = require("./instructions");
+import createMemory from "./create-memory";
+import instructions from "./instructions";
 
 class CPU {
   constructor(memory) {
@@ -635,4 +634,4 @@ class CPU {
   }
 }
 
-module.exports = CPU;
+export default CPU;
