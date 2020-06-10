@@ -6,7 +6,13 @@ import {
   withStyles,
   Theme,
 } from "@material-ui/core";
-import { Screen, Registers, Editor, Stack, Memory } from "./components/index";
+import {
+  Screen,
+  Registers,
+  Stack,
+  Memory,
+  MainPannelComponent,
+} from "./components/index";
 import VMContextProvider from "./utils/vmContext";
 const styles = (theme: Theme) =>
   createStyles({
@@ -55,7 +61,7 @@ const App = withStyles(styles)(({ classes }: Props) => {
           <Registers />
         </div>
         <div className={classes.editor}>
-          <Editor />
+          <MainPannelComponent />
         </div>
         <div className={classes.memory}>
           <Memory />

@@ -4,14 +4,14 @@ import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 
-import { VMContext } from "../../utils/vmContext";
+import { VMContext } from "../utils/vmContext";
 
 import CodeLine from "./codeLine";
 
 import {
   instructionLookupTable,
   registerLookupTable,
-} from "../../utils/lookupTable";
+} from "../utils/lookupTable";
 
 const useStyles = makeStyles((theme) => ({
   root: {
