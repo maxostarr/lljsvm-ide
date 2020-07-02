@@ -1,11 +1,19 @@
-const {inspect} = require('util');
+const A = require('arcsecond');
 const instructionsParser = require('./instructions');
+const {label} = require('./common');
 
-const deepLog = x => console.log(inspect(x, {
-  depth: Infinity,
-  colors: true
-}));
+module.exports = A.many (A.choice([
+  instructionsParser,
+  label
+]));
 
+// const Peek = new A.Parser(state => {
+//   debugger;
+//   return statel
+// })
 
-const res = instructionsParser.run('hlt');
-deepLog(res);
+// module.exports = A.coroutine(function* () {
+
+//   const res = yield Peek;
+//   debugger;
+// });
