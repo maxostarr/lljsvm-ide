@@ -17,10 +17,6 @@ const registerMap = {
   fp: 11,
 };
 export const assembleProgram = (code) => {
-  console.log("====================================");
-  console.log(I);
-  console.log(instructions);
-  console.log("====================================");
   const exampleProgram = code;
 
   const parsedOutput = parser.run(exampleProgram);
@@ -82,7 +78,6 @@ export const assembleProgram = (code) => {
     }
 
     const metadata = instructions[instruction.value.instruction];
-    console.log(metadata);
     machineCode.push(metadata.opcode);
 
     if ([I.litReg, I.memReg].includes(metadata.type)) {
@@ -125,6 +120,5 @@ export const assembleProgram = (code) => {
     }
   });
 
-  console.log(machineCode);
   return machineCode;
 };

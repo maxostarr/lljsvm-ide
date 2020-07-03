@@ -12,8 +12,6 @@ interface PropTypes {
 
 export const EditorComponent = ({ valueGetter }: PropTypes) => {
   function handleEditorDidMount(_valueGetter: any) {
-    console.log(_valueGetter);
-
     valueGetter.current = _valueGetter;
   }
   return (
