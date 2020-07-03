@@ -6,6 +6,22 @@ import initLanguageConfig from "./monacoConfig";
 
 initLanguageConfig();
 
-export const EditorComponent = () => {
-  return <Editor theme="lljsasm" language="lljsasm" value={Example} />;
+interface PropTypes {
+  valueGetter: React.MutableRefObject<any>;
+}
+
+export const EditorComponent = ({ valueGetter }: PropTypes) => {
+  function handleEditorDidMount(_valueGetter: any) {
+    console.log(_valueGetter);
+
+    valueGetter.current = _valueGetter;
+  }
+  return (
+    <Editor
+      theme="lljsasm"
+      language="lljsasm"
+      value={Example}
+      editorDidMount={handleEditorDidMount}
+    />
+  );
 };

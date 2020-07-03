@@ -1,6 +1,6 @@
-const parser = require("./parser");
-const instructions = require("../instructions");
-const { instructionTypes: I } = require("../instructions/meta");
+import parser from "./parser";
+import instructions from "../instructions/index.js";
+import { instructionTypes as I } from "../instructions/meta";
 
 const registerMap = {
   ip: 0,
@@ -16,7 +16,11 @@ const registerMap = {
   sp: 10,
   fp: 11,
 };
-export const parseProgram = (code) => {
+export const assembleProgram = (code) => {
+  console.log("====================================");
+  console.log(I);
+  console.log(instructions);
+  console.log("====================================");
   const exampleProgram = code;
 
   const parsedOutput = parser.run(exampleProgram);
@@ -31,6 +35,7 @@ export const parseProgram = (code) => {
       labels[instructionOrLabel.value] = currentAddress;
     } else {
       const metadata = instructions[instructionOrLabel.value.instruction];
+
       currentAddress += metadata.size;
     }
   });
@@ -77,6 +82,7 @@ export const parseProgram = (code) => {
     }
 
     const metadata = instructions[instruction.value.instruction];
+    console.log(metadata);
     machineCode.push(metadata.opcode);
 
     if ([I.litReg, I.memReg].includes(metadata.type)) {

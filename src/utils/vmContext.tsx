@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import { createVM } from "../lljsvm/index";
+import { assembleProgram } from "../lljsvm/assembler/index";
 
 let vm: any;
 
@@ -171,8 +172,8 @@ const VMContextProvider = ({ children }: any) => {
 
   const [vmState, setVmState] = useState(stateObj);
   const [isRunning, setIsRunning] = useState(false);
-  const initVM = (program: number[]) => {
-    vm = createVM(program);
+  const initVM = (program: string) => {
+    vm = createVM(assembleProgram(program));
     setVmState({
       ...stateObj,
       memory: vm.memory,

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useRef } from "react";
 import {
   Paper,
   Button,
@@ -42,11 +42,24 @@ interface Props extends WithStyles<typeof styles> {}
 
 export const MainPannelComponent = withStyles(styles)(({ classes }: Props) => {
   const [state, setState] = useState(0);
+  const valueGetter = useRef((): string => {
+    return "";
+  });
 
   const { initVM } = useContext(VMContext);
 
   const compileCode = () => {
-    initVM([12, 34, 56, 78]);
+    var code = null;
+    if (valueGetter) {
+      code = valueGetter?.current();
+      // .split("\n")
+      // .map((s) => s.trim())
+      // .join("\n");
+      console.log(code);
+    }
+    if (code) {
+      initVM(code);
+    }
   };
 
   const handleChange = (event: any, newValue: any) => {
@@ -70,7 +83,7 @@ export const MainPannelComponent = withStyles(styles)(({ classes }: Props) => {
           Compile
         </Button>
       </Paper>
-      {state === 0 ? <EditorComponent /> : <Run />}
+      {state === 0 ? <EditorComponent valueGetter={valueGetter} /> : <Run />}
     </div>
   );
 });

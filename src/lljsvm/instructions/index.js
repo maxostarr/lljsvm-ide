@@ -1,8 +1,9 @@
-const {meta} = require('./meta');
+import { meta } from "./meta.js";
 
-const indexBy = (array, prop) => array.reduce((output, item) => {
-  output[item[prop]] = item;
-  return output;
-}, {});
+const indexBy = (array, prop) =>
+  array.reduce((output, item) => {
+    output[item[prop]] = item;
+    return output;
+  }, {});
 
-module.exports = indexBy(meta, 'instruction');
+export default indexBy(meta, "instruction");
