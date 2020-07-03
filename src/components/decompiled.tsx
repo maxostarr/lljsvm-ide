@@ -153,6 +153,11 @@ const Decompiled = () => {
       continue;
     }
 
+    if (instruction.name === "HLT") {
+      if (!breakpoints.includes(address)) {
+        setBreakpoints([address, ...breakpoints]);
+      }
+    }
     parsed.push(
       <CodeLine
         key={address}
