@@ -1,11 +1,8 @@
-const A = require('arcsecond');
-const instructionsParser = require('./instructions');
-const {label} = require('./common');
+import * as A from "arcsecond";
+import instructionsParser from "./instructions";
+import { label } from "./common";
 
-module.exports = A.many (A.choice([
-  instructionsParser,
-  label
-]));
+export default A.many(A.choice([instructionsParser, label]));
 
 // const Peek = new A.Parser(state => {
 //   debugger;

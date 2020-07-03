@@ -1,15 +1,13 @@
-const A = require('arcsecond');
-const T = require('./types');
+import * as A from "arcsecond";
+import * as T from "./types";
 
-const {
-  peek,
-  hexLiteral,
-  operator,
-  variable,
-} = require('./common');
+import { peek, hexLiteral, operator, variable } from "./common";
 
-const disambiguateOrderOfOperations = expr => {
-  if (expr.type !== 'SQUARE_BRACKET_EXPRESSION' && expr.type !== 'BRACKETED_EXPRESSION') {
+const disambiguateOrderOfOperations = (expr) => {
+  if (
+    expr.type !== "SQUARE_BRACKET_EXPRESSION" &&
+    expr.type !== "BRACKETED_EXPRESSION"
+  ) {
     return expr;
   }
 
@@ -23,7 +21,7 @@ const disambiguateOrderOfOperations = expr => {
     OP_MINUS: 0,
   };
   let candidateExpression = {
-    priority: -Infinity
+    priority: -Infinity,
   };
 
   for (let i = 1; i < expr.value.length; i += 2) {
@@ -31,10 +29,10 @@ const disambiguateOrderOfOperations = expr => {
     if (level > candidateExpression.priority) {
       candidateExpression = {
         priority: level,
-        a: i-1,
-        b: i+1,
-        op: expr.value[i]
-      }
+        a: i - 1,
+        b: i + 1,
+        op: expr.value[i],
+      };
     }
   }
 
@@ -43,50 +41,52 @@ const disambiguateOrderOfOperations = expr => {
     T.binaryOperation({
       a: disambiguateOrderOfOperations(expr.value[candidateExpression.a]),
       b: disambiguateOrderOfOperations(expr.value[candidateExpression.b]),
-      op: candidateExpression.op
+      op: candidateExpression.op,
     }),
-  ...expr.value.slice(candidateExpression.b + 1)
+    ...expr.value.slice(candidateExpression.b + 1),
   ]);
 
   return disambiguateOrderOfOperations(newExpression);
-}
+};
 
-const last = a => a[a.length-1];
+const last = (a) => a[a.length - 1];
 
-const typifyBracketedExpression = expr => {
-  return T.bracketedExpression(expr.map(element => {
-    if (Array.isArray(element)) {
-      return typifyBracketedExpression(element);
-    }
-    return element;
-  }));
-}
+const typifyBracketedExpression = (expr) => {
+  return T.bracketedExpression(
+    expr.map((element) => {
+      if (Array.isArray(element)) {
+        return typifyBracketedExpression(element);
+      }
+      return element;
+    }),
+  );
+};
 
 const bracketedExpr = A.coroutine(function* () {
   const states = {
     OPEN_BRACKET: 0,
     OPERATOR_OR_CLOSING_BRACKET: 1,
     ELEMENT_OR_OPENING_BRACKET: 2,
-    CLOSE_BRACKET: 3
+    CLOSE_BRACKET: 3,
   };
 
   let state = states.ELEMENT_OR_OPENING_BRACKET;
 
   const expr = [];
   const stack = [expr];
-  yield A.char('(');
+  yield A.char("(");
 
   while (true) {
     const nextChar = yield peek;
 
     if (state === states.OPEN_BRACKET) {
-      yield A.char('(');
+      yield A.char("(");
       expr.push([]);
       stack.push(last(expr));
       yield A.optionalWhitespace;
       state = states.ELEMENT_OR_OPENING_BRACKET;
     } else if (state === states.CLOSE_BRACKET) {
-      yield A.char(')');
+      yield A.char(")");
       stack.pop();
       if (stack.length === 0) {
         // We've reached the end of the bracket expression
@@ -96,22 +96,19 @@ const bracketedExpr = A.coroutine(function* () {
       yield A.optionalWhitespace;
       state = states.OPERATOR_OR_CLOSING_BRACKET;
     } else if (state === states.ELEMENT_OR_OPENING_BRACKET) {
-      if (nextChar === ')') {
-        yield A.fail('Unexpected end of expression');
+      if (nextChar === ")") {
+        yield A.fail("Unexpected end of expression");
       }
 
-      if (nextChar === '(') {
+      if (nextChar === "(") {
         state = states.OPEN_BRACKET;
       } else {
-        last(stack).push(yield A.choice([
-          hexLiteral,
-          variable
-        ]));
+        last(stack).push(yield A.choice([hexLiteral, variable]));
         yield A.optionalWhitespace;
         state = states.OPERATOR_OR_CLOSING_BRACKET;
       }
     } else if (state === states.OPERATOR_OR_CLOSING_BRACKET) {
-      if (nextChar === ')') {
+      if (nextChar === ")") {
         state = states.CLOSE_BRACKET;
         continue;
       }
@@ -121,15 +118,14 @@ const bracketedExpr = A.coroutine(function* () {
       state = states.ELEMENT_OR_OPENING_BRACKET;
     } else {
       // This shouldn't happen!
-      throw new Error('Unknown state');
+      throw new Error("Unknown state");
     }
-
   }
   return typifyBracketedExpression(expr);
 });
 
 const squareBracketExpr = A.coroutine(function* () {
-  yield A.char('[');
+  yield A.char("[");
   yield A.optionalWhitespace;
 
   const states = {
@@ -142,18 +138,14 @@ const squareBracketExpr = A.coroutine(function* () {
 
   while (true) {
     if (state === states.EXPECT_ELEMENT) {
-      const result = yield A.choice([
-        bracketedExpr,
-        hexLiteral,
-        variable
-      ]);
+      const result = yield A.choice([bracketedExpr, hexLiteral, variable]);
       expr.push(result);
       state = states.EXPECT_OPERATOR;
       yield A.optionalWhitespace;
     } else if (state === states.EXPECT_OPERATOR) {
       const nextChar = yield peek;
-      if (nextChar === ']') {
-        yield A.char(']');
+      if (nextChar === "]") {
+        yield A.char("]");
         yield A.optionalWhitespace;
         break;
       }
@@ -168,7 +160,4 @@ const squareBracketExpr = A.coroutine(function* () {
   return T.squareBracketExpression(expr);
 }).map(disambiguateOrderOfOperations);
 
-module.exports = {
-  bracketedExpr,
-  squareBracketExpr,
-};
+export { bracketedExpr, squareBracketExpr };
