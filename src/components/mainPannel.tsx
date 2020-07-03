@@ -48,13 +48,10 @@ export const MainPannelComponent = withStyles(styles)(({ classes }: Props) => {
 
   const { initVM } = useContext(VMContext);
 
-  const compileCode = () => {
+  const assembleCode = () => {
     var code = null;
     if (valueGetter) {
       code = valueGetter?.current();
-      // .split("\n")
-      // .map((s) => s.trim())
-      // .join("\n");
       console.log(code);
     }
     if (code) {
@@ -79,8 +76,8 @@ export const MainPannelComponent = withStyles(styles)(({ classes }: Props) => {
           <Tab className={classes.tab} label="Editor" />
           <Tab className={classes.tab} label="Run" />
         </Tabs>
-        <Button variant="contained" color="secondary" onClick={compileCode}>
-          Compile
+        <Button variant="contained" color="secondary" onClick={assembleCode}>
+          Assemble
         </Button>
       </Paper>
       {state === 0 ? <EditorComponent valueGetter={valueGetter} /> : <Run />}
