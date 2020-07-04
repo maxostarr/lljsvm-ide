@@ -9,13 +9,19 @@ export const VMContext = React.createContext({} as any);
 // Create some initial VM instance to avoid undefined values before initial compilation
 vm = createVM([0, 0, 0, 0]);
 
-const VMContextProvider = ({ children }: any) => {
-  const stateObj = {
+const getNewVMState = (vm: any) => {
+  return {
     memory: vm.memory,
     cpu: vm.cpu,
     ip: vm.cpu.getRegister("ip"),
     fp: vm.cpu.getRegister("fp"),
     sp: vm.cpu.getRegister("sp"),
+  };
+};
+
+const VMContextProvider = ({ children }: any) => {
+  const stateObj = {
+    ...getNewVMState(vm),
     stepCPU: () => stepCPU(),
   };
 
@@ -25,11 +31,7 @@ const VMContextProvider = ({ children }: any) => {
     vm = createVM(assembleProgram(program));
     setVmState({
       ...stateObj,
-      memory: vm.memory,
-      cpu: vm.cpu,
-      ip: vm.cpu.getRegister("ip"),
-      fp: vm.cpu.getRegister("fp"),
-      sp: vm.cpu.getRegister("sp"),
+      ...getNewVMState(vm),
     });
   };
   const stepCPU = () => {
@@ -37,11 +39,7 @@ const VMContextProvider = ({ children }: any) => {
 
     setVmState({
       ...stateObj,
-      memory: vm.memory,
-      cpu: vm.cpu,
-      ip: vm.cpu.getRegister("ip"),
-      fp: vm.cpu.getRegister("fp"),
-      sp: vm.cpu.getRegister("sp"),
+      ...getNewVMState(vm),
     });
   };
   return (
