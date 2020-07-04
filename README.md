@@ -4,7 +4,8 @@ It is currently very much a work in progress.
 
 See a live deploy at [v2.lljside.maxstarr.xyz](https://v2.lljside.maxstarr.xyz/)
 
-Currently, compile just puts some garbage into memory for testing purposes.
+# A note on import vs. require. 
+Since I'm using typescript for this project, it seems to have issues when the JS files from the LLJSVM use the module.exports / require() common js syntax when making a production build. I converted all the files over to TS/ES6 syntax to get around this error, require seems to work fine in dev.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
