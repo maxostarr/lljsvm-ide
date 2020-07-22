@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import registerNames from '../lljsvm/registers';
 import {
   Paper,
   Typography,
@@ -28,7 +29,7 @@ const styles = (theme: Theme) =>
       padding: theme.spacing(3),
     },
     registerLine: {
-      fontSize: theme.typography.fontSize * 2,
+      fontSize: theme.typography.fontSize * 1.5,
       fontFamily: "Roboto Mono",
     },
   });
@@ -37,7 +38,7 @@ interface Props extends WithStyles<typeof styles> {}
 
 export const Registers = withStyles(styles)(({ classes }: Props) => {
   const { cpu } = useContext(VMContext);
-  const registers = cpu.registerNames.map((name: string) => {
+  const registers = registerNames.map((name: string) => {
     return (
       <div className={classes.registerLine}>
         {name.padEnd(4, "\u00a0")}: 0x
