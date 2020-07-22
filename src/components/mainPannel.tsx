@@ -13,6 +13,8 @@ import {
 import { VMContext } from "../utils/vmContext";
 import { EditorComponent } from "./editor/editor";
 import { Run } from "./run";
+import LoaderPanel from "./loader-panel";
+import { assembleProgram } from "../lljsvm/assembler";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -46,7 +48,10 @@ export const MainPannelComponent = withStyles(styles)(({ classes }: Props) => {
     return "";
   });
 
-  const { initVM } = useContext(VMContext);
+  const [loaderData, setLoaderData] = useState<number[]>([]);
+  const [loaderAddress, setLoaderAddress] = useState<number>(0);
+
+  const { loadIntoMemory } = useContext(VMContext);
 
   const assembleCode = () => {
     var code = null;
@@ -55,7 +60,15 @@ export const MainPannelComponent = withStyles(styles)(({ classes }: Props) => {
       console.log(code);
     }
     if (code) {
-      initVM(code);
+      const result = assembleProgram(code);
+      setLoaderData(result);
+      setState(1);
+    }
+  };
+
+  const loadCode = () => {
+    if (loaderData.length) {
+      loadIntoMemory(loaderAddress, loaderData);
     }
   };
 
@@ -74,13 +87,33 @@ export const MainPannelComponent = withStyles(styles)(({ classes }: Props) => {
           aria-label="disabled tabs example"
         >
           <Tab className={classes.tab} label="Editor" />
+          <Tab className={classes.tab} label="Loader" />
           <Tab className={classes.tab} label="Run" />
         </Tabs>
-        <Button variant="contained" color="secondary" onClick={assembleCode}>
-          Assemble
-        </Button>
+
+        {
+          state === 0 ? (
+            <Button variant="contained" color="secondary" onClick={assembleCode}>
+              Assemble
+            </Button>
+          ) : state === 1 ? (
+            <Button variant="contained" color="secondary" onClick={loadCode}>
+              Load Into Memory
+            </Button>
+          ) : null
+        }
+
       </Paper>
-      {state === 0 ? <EditorComponent valueGetter={valueGetter} /> : <Run />}
+      {state === 0
+        ? <EditorComponent valueGetter={valueGetter} />
+        : state === 1
+          ? <LoaderPanel
+              setLoaderData={setLoaderData}
+              loaderData={loaderData}
+              setLoaderAddress={setLoaderAddress}
+              loaderAddress={loaderAddress}
+            />
+          : <Run />}
     </div>
   );
 });
