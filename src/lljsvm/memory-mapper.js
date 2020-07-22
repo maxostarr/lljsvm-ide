@@ -50,6 +50,10 @@ class MemoryMapper {
     const finalAddress = region.remap ? address - region.start : address;
     return region.device.setUint8(finalAddress, value);
   }
+
+  load(startAddress, data) {
+    data.forEach((byte, offset) => this.setUint8(startAddress + offset, byte));
+  }
 }
 
 export default MemoryMapper;

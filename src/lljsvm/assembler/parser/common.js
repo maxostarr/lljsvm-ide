@@ -1,24 +1,12 @@
 import * as A from "arcsecond";
 import * as T from "./types";
 import { mapJoin } from "./util";
+import registers from '../../registers';
 
 const upperOrLowerStr = (s) =>
   A.choice([A.str(s.toUpperCase()), A.str(s.toLowerCase())]);
 
-const register = A.choice([
-  upperOrLowerStr("r1"),
-  upperOrLowerStr("r2"),
-  upperOrLowerStr("r3"),
-  upperOrLowerStr("r4"),
-  upperOrLowerStr("r5"),
-  upperOrLowerStr("r6"),
-  upperOrLowerStr("r7"),
-  upperOrLowerStr("r8"),
-  upperOrLowerStr("sp"),
-  upperOrLowerStr("fp"),
-  upperOrLowerStr("ip"),
-  upperOrLowerStr("acc"),
-]).map(T.register);
+const register = A.choice(registers.map(upperOrLowerStr)).map(T.register);
 
 const hexDigit = A.regex(/^[0-9A-Fa-f]/);
 const hexLiteral = A.char("$")
