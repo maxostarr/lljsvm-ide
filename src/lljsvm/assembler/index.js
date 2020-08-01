@@ -1,6 +1,6 @@
 import parser from "./parser";
 import instructions from "../instructions/index.js";
-import {meta, instructionTypes as I} from "../instructions/meta";
+import { instructionTypes as I } from "../instructions/meta";
 import registers from "../registers";
 
 const registerMap = registers.reduce((map, regName, index) => {
