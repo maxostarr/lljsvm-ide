@@ -67,9 +67,10 @@ const getRegisterName = (memory: any, i: number) => {
 const Decompiled = () => {
   const [breakpoints, setBreakpoints] = useState([] as number[]);
   const [startAddress, setStartAddress] = useState("0");
-  const [endAddress, setEndAddress] = useState("0100");
+  const [offset, setOffset] = useState("0100");
   const { memory, ip, setIsRunning } = useContext(VMContext);
   const classes = useStyles();
+  const endAddress = (parseInt(startAddress, 16) + parseInt(offset, 16)).toString(16);
 
   const toggleBreakpoint = (address: number) => {
     if (breakpoints.includes(address)) {
@@ -87,13 +88,17 @@ const Decompiled = () => {
     if (event.target.id === "start") {
       setStartAddress(event.target.value);
     } else {
-      setEndAddress(event.target.value);
+      setOffset(event.target.value);
     }
   };
 
   let zeroCount = 0;
   let parsed = [];
-  for (let i = parseInt(startAddress, 16); i < parseInt(endAddress, 16); i++) {
+
+  const startValue = parseInt(startAddress, 16) || 0;
+  const endValue = parseInt(endAddress, 16) || startValue + 1;
+
+  for (let i = startValue; i < endValue; i++) {
     const opCodeRead = memory.getUint8(i);
     const address = i;
     if (opCodeRead === 0x00) {
@@ -186,10 +191,10 @@ const Decompiled = () => {
         <TextField
           id="end"
           className={classes.controls}
-          label="Final Address"
+          label="Offset"
           margin="dense"
           variant="outlined"
-          value={endAddress}
+          value={offset}
           onChange={handleChange}
         />
       </div>

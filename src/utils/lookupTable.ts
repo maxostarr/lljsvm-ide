@@ -1,3 +1,5 @@
+import registers from '../lljsvm/registers';
+
 const argTypes = {
   register: {
     length: 8,
@@ -18,6 +20,16 @@ const argTypes = {
 };
 
 const instructionLookupTable = [
+  {
+    opCode: 0xFC,
+    name: "RET_INT",
+    args: [],
+  },
+  {
+    opCode: 0xFD,
+    name: "INT",
+    args: [argTypes.literal16],
+  },
   {
     opCode: 0x10,
     name: "MOV_LIT_REG",
@@ -253,19 +265,6 @@ const instructionLookupTable = [
     args: [],
   },
 ];
-const registerLookupTable = [
-  { name: "IP", number: 0 },
-  { name: "ACC", number: 1 },
-  { name: "R1", number: 2 },
-  { name: "R2", number: 3 },
-  { name: "R3", number: 4 },
-  { name: "R4", number: 5 },
-  { name: "R5", number: 6 },
-  { name: "R6", number: 7 },
-  { name: "R7", number: 8 },
-  { name: "R8", number: 9 },
-  { name: "SP", number: 10 },
-  { name: "FP", number: 11 },
-];
+const registerLookupTable = registers.map((name, number) => ({ name, number }));
 
 export { instructionLookupTable, registerLookupTable };

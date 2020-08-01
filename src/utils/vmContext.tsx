@@ -2,8 +2,10 @@ import React, { useState } from "react";
 
 import { createVM } from "../lljsvm/index";
 import { assembleProgram } from "../lljsvm/assembler/index";
+import MemoryMapper from "../lljsvm/memory-mapper";
+import CPU from "../lljsvm/cpu";
 
-let vm: any;
+let vm: { memory: MemoryMapper, cpu: CPU };
 
 export const VMContext = React.createContext({} as any);
 // Create some initial VM instance to avoid undefined values before initial compilation
@@ -34,6 +36,16 @@ const VMContextProvider = ({ children }: any) => {
       ...getNewVMState(vm),
     });
   };
+  const loadIntoMemory = (address:number, data: number[]) => {
+    if (!vm) {
+      vm = createVM([]);
+    }
+    vm.memory.load(address, data);
+    setVmState({
+      ...stateObj,
+      ...getNewVMState(vm),
+    });
+  }
   const stepCPU = () => {
     vm.cpu.step();
 
@@ -43,7 +55,7 @@ const VMContextProvider = ({ children }: any) => {
     });
   };
   return (
-    <VMContext.Provider value={{ ...vmState, setIsRunning, isRunning, initVM }}>
+    <VMContext.Provider value={{ ...vmState, setIsRunning, isRunning, initVM, loadIntoMemory }}>
       {children}
     </VMContext.Provider>
   );
