@@ -11,9 +11,19 @@ const styles = (theme: Theme) =>
     byte: {
       flexGrow: 1,
     },
-    byteHighlight: {
+    byteHighlightIp: {
       flexGrow: 1,
       outlineColor: theme.palette.ip.main,
+      outlineStyle: `solid`,
+    },
+    byteHighlightFp: {
+      flexGrow: 1,
+      outlineColor: theme.palette.fp.main,
+      outlineStyle: `solid`,
+    },
+    byteHighlightSp: {
+      flexGrow: 1,
+      outlineColor: theme.palette.sp.main,
       outlineStyle: `solid`,
     },
     address: {
@@ -42,16 +52,26 @@ const styles = (theme: Theme) =>
 
 interface Props extends WithStyles<typeof styles> {
   ip?: number;
+  sp?: number;
+  fp?: number;
   address: number;
   bytes: string[];
 }
 
 export const MemoryLine = withStyles(styles)(
-  ({ classes, address, bytes, ip }: Props) => {
+  ({ classes, address, bytes, ip, fp, sp }: Props) => {
     const byteSpans = bytes.map((byte, i) => {
       return (
         <span
-          className={ip === address + i ? classes.byteHighlight : classes.byte}
+          className={
+            ip === address + i
+              ? classes.byteHighlightIp
+              : fp === address + i
+              ? classes.byteHighlightFp
+              : sp === address + i
+              ? classes.byteHighlightSp
+              : classes.byte
+          }
         >
           {byte !== "0x00" ? byte : "----"}
         </span>

@@ -47,13 +47,15 @@ const styles = (theme: Theme) =>
 interface Props extends WithStyles<typeof styles> {}
 
 export const Stack = withStyles(styles)(({ classes }: Props) => {
-  const { memory } = useContext(VMContext);
+  const { memory, fp, sp } = useContext(VMContext);
   const [memoryBank, setMemoryBank] = useState(
     (0xffff - 0x0080 + 0x0001) / 0x0008,
   );
   const memoryLines = Array.from({ length: 16 }, (_, i) => {
     return (
       <MemoryLine
+        fp={fp}
+        sp={sp}
         key={(i + memoryBank) * 0x0008}
         address={(i + memoryBank) * 0x0008}
         bytes={viewMemoryAt((i + memoryBank) * 0x0008, memory)}
