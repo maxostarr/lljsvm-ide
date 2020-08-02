@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import registerNames from '../lljsvm/registers';
+import registerNames from "../lljsvm/registers";
 import {
   Paper,
   Typography,
@@ -22,6 +22,11 @@ const styles = (theme: Theme) =>
       // height: "1fc"
       padding: theme.spacing(1),
     },
+    ip: {
+      color: theme.palette.ip.main,
+    },
+    fp: {},
+    mb: {},
     registers: {
       flexGrow: 1,
       backgroundColor: theme.palette.grey[600],
@@ -40,7 +45,9 @@ export const Registers = withStyles(styles)(({ classes }: Props) => {
   const { cpu } = useContext(VMContext);
   const registers = registerNames.map((name: string) => {
     return (
-      <div className={classes.registerLine}>
+      <div
+        className={`${classes.registerLine} ${name === "ip" ? classes.ip : ""}`}
+      >
         {name.padEnd(4, "\u00a0")}: 0x
         {cpu.getRegister(name).toString(16).padStart(4, "0")}
       </div>
