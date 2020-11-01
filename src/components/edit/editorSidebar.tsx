@@ -1,4 +1,6 @@
 import { makeStyles } from "@material-ui/core";
+import CreateNewFolderIcon from "@material-ui/icons/CreateNewFolder";
+import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import React from "react";
 import File from "./file";
 import Folder from "./folder";
@@ -17,7 +19,7 @@ type FolderType = {
 const dummyFilesystem = [
   {
     type: "folder",
-    name: "folder1",
+    name: "ffffffffffffffffffffffffffffffff",
     contents: [
       { name: "file1.jsasm", type: "file" },
       { name: "file2.jsasm", type: "file" },
@@ -26,20 +28,29 @@ const dummyFilesystem = [
   } as FolderType,
 ] as (FileType | FolderType)[];
 
-const makeFile = (file: FileType) => <File name={file.name} />;
-const makeFolder = (folder: FolderType) => (
-  <Folder name={folder.name} contents={folder.contents} />
-);
-
 const useStyles = makeStyles((theme) => ({
   container: {
     height: "100vh",
     backgroundColor: theme.palette.grey[800],
   },
+  item: {
+    marginTop: "0.5em",
+  },
 }));
 
 const EditorSidebar = () => {
   const classes = useStyles();
+
+  const makeFile = (file: FileType) => (
+    <File className={classes.item} name={file.name} />
+  );
+  const makeFolder = (folder: FolderType) => (
+    <Folder
+      className={classes.item}
+      name={folder.name}
+      contents={folder.contents}
+    />
+  );
 
   const filesAndFolders = dummyFilesystem.map((item) => {
     if (item.type === "folder") {

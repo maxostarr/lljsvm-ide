@@ -1,15 +1,12 @@
-import React from 'react'
+import React from "react";
 
 interface PropTypes {
-  name: string
+  name: string;
+  className: string;
 }
 
-const File = ({name}: PropTypes) => {
-  return (
-    <div>
-      {name}      
-    </div>
-  )
-}
+const File = ({ name, className }: PropTypes) => {
+  return <div className={className}>{name}</div>;
+};
 
-export default File
+export default File;
