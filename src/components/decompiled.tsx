@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 0,
   },
   divider: {
-    width: 400,
+    // width: 400,
     borderBottom: "solid",
     borderWidth: 0.5,
     borderColor: "black",
@@ -51,9 +51,13 @@ const useStyles = makeStyles((theme) => ({
   },
   controls: {
     display: "flex",
-    marginTop: 0,
-    marginBottom: 10,
+    // marginTop: 0,
+    // marginBottom: 10,
   },
+
+  decompiled: {
+    backgroundColor: theme.palette.grey[900]
+  }
 }));
 
 const getRegisterName = (memory: any, i: number) => {
@@ -176,30 +180,35 @@ const Decompiled = () => {
     );
   }
   return (
-    <Paper className={classes.root}>
-      <h3 className={classes.h3}>Assembly Code</h3>
-      <div className={classes.controls}>
-        <TextField
-          id="start"
-          className={classes.controls}
-          label="First Address"
-          margin="dense"
-          variant="outlined"
-          value={startAddress}
-          onChange={handleChange}
-        />
-        <TextField
-          id="end"
-          className={classes.controls}
-          label="Offset"
-          margin="dense"
-          variant="outlined"
-          value={offset}
-          onChange={handleChange}
-        />
-      </div>
-      {parsed}
-    </Paper>
+    <>
+      <Paper className={classes.root}>
+        <h3 className={classes.h3}>Assembly Code</h3>
+        <div className={classes.controls}>
+          <TextField
+            id="start"
+            className={classes.controls}
+            label="First Address"
+            margin="dense"
+            variant="outlined"
+            value={startAddress}
+            onChange={handleChange}
+          />
+          <TextField
+            id="end"
+            className={classes.controls}
+            label="Offset"
+            margin="dense"
+            variant="outlined"
+            value={offset}
+            onChange={handleChange}
+          />
+        </div>
+        {/* {parsed} */}
+      </Paper>
+      <Paper className={`${classes.decompiled} ${classes.root}`}>
+        {parsed}
+      </Paper>
+    </>
   );
 };
 

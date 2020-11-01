@@ -34,8 +34,9 @@ export const Run = () => {
           stepCPU();
         }
       });
+      setIsRunning(false)
     };
-  }, [stepCPU]);
+  }, [stepCPU, setIsRunning]);
 
   useInterval(() => {
     if (isRunning) {
