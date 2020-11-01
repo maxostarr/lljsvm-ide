@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import registerNames from "../lljsvm/registers";
+import registerNames from "../../lljsvm/registers";
 import {
   Paper,
   Typography,
@@ -9,7 +9,7 @@ import {
   withStyles,
   Theme,
 } from "@material-ui/core";
-import { VMContext } from "../utils/vmContext";
+import { VMContext } from "../../utils/vmContext";
 
 const styles = (theme: Theme) =>
   createStyles({

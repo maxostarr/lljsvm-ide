@@ -14,6 +14,7 @@ import {
   MainPannelComponent,
 } from "./components/index";
 import VMContextProvider from "./utils/vmContext";
+import Edit from "./views/edit";
 const styles = (theme: Theme) =>
   createStyles({
     containter: {
@@ -53,7 +54,7 @@ const App = withStyles(styles)(({ classes }: Props) => {
   return (
     <VMContextProvider>
       <CssBaseline />
-      <div className={classes.containter}>
+      {/* <div className={classes.containter}>
         <div className={classes.screen}>
           <Screen />
         </div>
@@ -69,7 +70,8 @@ const App = withStyles(styles)(({ classes }: Props) => {
         <div className={classes.stack}>
           <Stack />
         </div>
-      </div>
+      </div> */}
+      <Edit />
     </VMContextProvider>
   );
 });

@@ -10,11 +10,11 @@ import {
   Tab,
 } from "@material-ui/core";
 
-import { VMContext } from "../utils/vmContext";
-import { EditorComponent } from "./editor/editor";
-import { Run } from "./run";
-import LoaderPanel from "./loader-panel";
-import { assembleProgram } from "../lljsvm/assembler";
+import { VMContext } from "../../utils/vmContext";
+import { EditorComponent } from "../editor/editor";
+import { Run } from "../run/run";
+import LoaderPanel from "../run/loader-panel";
+import { assembleProgram } from "../../lljsvm/assembler";
 
 const styles = (theme: Theme) =>
   createStyles({

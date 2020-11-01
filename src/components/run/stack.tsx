@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 
 import { MemoryLine } from "./memoryLine";
-import { VMContext } from "../utils/vmContext";
+import { VMContext } from "../../utils/vmContext";
 
 const viewMemoryAt = (address: number, memory: any) => {
   const bytes = Array.from({ length: 8 }, (_, i) => {

@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import Decompiled from "./decompiled";
 import { Paper, Button, TextField, makeStyles } from "@material-ui/core";
-import { VMContext } from "../utils/vmContext";
-import useInterval from "../utils/useInterval";
+import { VMContext } from "../../utils/vmContext";
+import useInterval from "../../utils/useInterval";
 const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1),
