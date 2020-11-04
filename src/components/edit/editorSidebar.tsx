@@ -1,37 +1,17 @@
 import { makeStyles } from "@material-ui/core";
 import CreateNewFolderIcon from "@material-ui/icons/CreateNewFolder";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
-import React from "react";
+import React, { useContext } from "react";
+import { IDirectory, IFile } from "../../../types/files";
+import { EditorContext } from "../../utils/editorContext";
 import File from "./file";
 import Folder from "./folder";
-
-type FileType = {
-  type: "file";
-  name: string;
-};
-
-type FolderType = {
-  type: "folder";
-  name: string;
-  contents: File[];
-};
-
-const dummyFilesystem = [
-  {
-    type: "folder",
-    name: "ffffffffffffffffffffffffffffffff",
-    contents: [
-      { name: "file1.jsasm", type: "file" },
-      { name: "file2.jsasm", type: "file" },
-      { name: "file3.jsasm", type: "file" },
-    ],
-  } as FolderType,
-] as (FileType | FolderType)[];
 
 const useStyles = makeStyles((theme) => ({
   container: {
     height: "100vh",
     backgroundColor: theme.palette.grey[800],
+    padding: "1.5em",
   },
   item: {
     marginTop: "0.5em",
@@ -40,26 +20,30 @@ const useStyles = makeStyles((theme) => ({
 
 const EditorSidebar = () => {
   const classes = useStyles();
+  const { root } = useContext(EditorContext);
+  console.log("from sidebar", root);
 
-  const makeFile = (file: FileType) => (
-    <File className={classes.item} name={file.name} />
+  const makeFile = (file: IFile, i: number) => (
+    <File className={classes.item} name={file.name} key={`${i}${file.name}`} />
   );
-  const makeFolder = (folder: FolderType) => (
+  const makeFolder = (folder: IDirectory, i: number) => (
     <Folder
+      key={`${i}${folder.name}`}
       className={classes.item}
       name={folder.name}
       contents={folder.contents}
     />
   );
 
-  const filesAndFolders = dummyFilesystem.map((item) => {
-    if (item.type === "folder") {
-      return makeFolder(item);
-    } else {
-      return makeFile(item);
-    }
-  });
-
+  const filesAndFolders = root.contents
+    ?.sort((a, b) => (a.isDirectory ? -1 : 1))
+    .map((item, i) => {
+      if (item.isDirectory) {
+        return makeFolder(item, i);
+      } else {
+        return makeFile(item, i);
+      }
+    });
   return <div className={classes.container}>{filesAndFolders}</div>;
 };
 

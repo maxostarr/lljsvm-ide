@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext", "ES6"],
+    "lib": ["dom", "dom.iterable", "esnext", "ES6", "ES2020.Promise"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -18,5 +18,5 @@
     "noImplicitThis": true,
     "strictNullChecks": true
   },
-  "include": ["src"]
+  "include": ["src", "electron"]
 }

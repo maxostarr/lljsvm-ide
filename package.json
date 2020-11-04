@@ -1,8 +1,8 @@
 {
   "name": "llsjvm-ide",
-  "type": "module",
   "version": "0.1.0",
   "private": true,
+  "main": "build/electron/main.js",
   "dependencies": {
     "@material-ui/core": "^4.9.8",
     "@material-ui/icons": "^4.9.1",
@@ -11,22 +11,39 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "@types/electron-devtools-installer": "^2.2.0",
     "@types/jest": "^26.0.15",
     "@types/node": "^14.14.2",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
     "arcsecond": "^3.1.2",
+    "electron-devtools-installer": "^3.1.1",
+    "electron-is-dev": "^1.2.0",
+    "electron-reload": "^1.5.0",
     "monaco-editor": "^0.21.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "3.4.4",
-    "typescript": "~4.0.3"
+    "typescript": "^3.9.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "postinstall": "electron-builder install-app-deps",
+    "electron:dev": "concurrently \"BROWSER=none && yarn start\" \"wait-on http://localhost:3000 && tsc -p electron -w\" \"wait-on http://localhost:3000 && tsc -p electron && electron .\"",
+    "electron:windev": "concurrently \"SET BROWSER=none && yarn start\" \"wait-on http://localhost:3000 && tsc -p electron -w\" \"wait-on http://localhost:3000 && tsc -p electron && electron .\"",
+    "electron:build": "yarn build && tsc -p electron && electron-builder"
+  },
+  "build": {
+    "extends": null,
+    "files": [
+      "build/**/*"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    }
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -42,5 +59,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0",
+    "electron": "^10.1.5",
+    "electron-builder": "^22.9.1",
+    "wait-on": "^5.2.0"
   }
 }

@@ -1,13 +1,11 @@
-import { makeStyles, Box, Divider } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import FolderIcon from "@material-ui/icons/Folder";
 import FolderOpenIcon from "@material-ui/icons/FolderOpen";
 import React, { useState } from "react";
+import { DirorFile, IFile } from "../../../types/files";
 import File from "./file";
 
 const useStyles = makeStyles((theme) => ({
-  container: {
-    padding: "1.5em",
-  },
   nameContainer: {
     display: "flex",
     cursor: "pointer",
@@ -28,18 +26,22 @@ const useStyles = makeStyles((theme) => ({
 
 interface PropTypes {
   name: string;
-  contents: File[];
+  contents: DirorFile[];
   className: string;
 }
 
 const Folder = ({ name, contents, className }: PropTypes) => {
   const [isOpen, setisOpen] = useState(true);
   const classes = useStyles();
-  const files = contents.map((file) => (
-    <File className={className} name={file.name} key={`${name}:${file}`} />
+  const files = contents?.map((file, i) => (
+    <File
+      className={className}
+      name={file.name}
+      key={`${i}${name}:${file.name}`}
+    />
   ));
   return (
-    <div className={`${className} ${classes.container}`}>
+    <div className={`${className}`}>
       <div
         className={classes.nameContainer}
         onClick={(e) => {
