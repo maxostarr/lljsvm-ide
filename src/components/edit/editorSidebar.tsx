@@ -1,6 +1,6 @@
-import { makeStyles } from "@material-ui/core";
+import { IconButton, makeStyles } from "@material-ui/core";
 import CreateNewFolderIcon from "@material-ui/icons/CreateNewFolder";
-import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
+import NoteAddIcon from "@material-ui/icons/NoteAdd";
 import React, { useContext } from "react";
 import { IDirectory, IFile } from "../../types/files";
 import { EditorContext } from "../../utils/editorContext";
@@ -18,14 +18,22 @@ const useStyles = makeStyles((theme) => ({
   item: {
     marginTop: "0.5em",
   },
+  top: {
+    padding: "0.5em",
+  },
 }));
 
 const EditorSidebar = () => {
   const classes = useStyles();
-  const { root } = useContext(EditorContext);
+  const { root, createNewFile, createNewDirectory } = useContext(EditorContext);
 
   const makeFile = (file: IFile, i: number) => (
-    <File className={classes.item} name={file.name} key={`${i}${file.name}`} />
+    <File
+      className={classes.item}
+      name={file.name}
+      path={file.path}
+      key={`${i}${file.name}`}
+    />
   );
   const makeFolder = (folder: IDirectory, i: number) => (
     <Folder
@@ -47,7 +55,22 @@ const EditorSidebar = () => {
         return makeFile(item, i);
       }
     });
-  return <div className={classes.container}>{filesAndFolders}</div>;
+  return (
+    <div>
+      {root.name && (
+        <div className={classes.top}>
+          {root.name}
+          <IconButton onClick={() => createNewFile(root.path)}>
+            <NoteAddIcon />
+          </IconButton>
+          <IconButton onClick={() => createNewDirectory(root.path)}>
+            <CreateNewFolderIcon />
+          </IconButton>
+        </div>
+      )}
+      <div className={classes.container}>{filesAndFolders}</div>
+    </div>
+  );
 };
 
 export default EditorSidebar;

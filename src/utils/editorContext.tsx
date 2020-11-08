@@ -1,7 +1,7 @@
-import React, { ReactElement, useReducer } from "react";
+import React, { ReactElement, useReducer, useState } from "react";
 import { Action, ActionTypes } from "../types/fileEnums";
 import { IDirectory } from "../types/files";
-import { useDirectory } from "./useFilesystem";
+import { useDirectory, useFile } from "./filesysUtils";
 
 export const EditorContext = React.createContext({} as IContextValue);
 
@@ -61,7 +61,10 @@ const reducer = (root: IDirectory, action: Action): IDirectory => {
       const path = action.payload as string;
       return updateCloseDirectory(root, path);
     case ActionTypes.NEW_ROOT:
-      return action.payload as IDirectory;
+      if (action.payload) {
+        return action.payload as IDirectory;
+      }
+      return root;
     default:
       return {} as IDirectory;
   }
@@ -69,8 +72,12 @@ const reducer = (root: IDirectory, action: Action): IDirectory => {
 
 interface IContextValue {
   root: IDirectory;
+  editorInitialContent: string;
   openDirectory: (path: string) => void;
+  openFile: (path: string) => void;
   closeDirectory: (path: string) => void;
+  createNewFile: (path: string) => void;
+  createNewDirectory: (path: string) => void;
 }
 
 interface PropTypes {
@@ -79,10 +86,13 @@ interface PropTypes {
 
 export const EditorContextProvider = ({ children }: PropTypes) => {
   const [root, dispatch] = useReducer(reducer, {} as IDirectory);
+  const [editorInitialContent, setEditorInitialContent] = useState("");
 
-  const [getDirectory] = useDirectory((payload) =>
+  const [getDirectory, createDirectory] = useDirectory((payload) =>
     dispatch({ type: ActionTypes.NEW_ROOT, payload }),
   );
+
+  const [readFile, createFile] = useFile();
 
   const closeDirectory = (path: string) =>
     dispatch({ type: ActionTypes.CLOSE_DIRECTORY, payload: path });
@@ -96,8 +106,30 @@ export const EditorContextProvider = ({ children }: PropTypes) => {
       payload: dir,
     });
   };
+
+  const openFile = async (path: string) => {
+    setEditorInitialContent(await readFile(path));
+  };
+
+  const createNewFile = (path: string) => {
+    createFile(path);
+  };
+  const createNewDirectory = (path: string) => {
+    createDirectory(path);
+  };
+
   return (
-    <EditorContext.Provider value={{ root, openDirectory, closeDirectory }}>
+    <EditorContext.Provider
+      value={{
+        root,
+        editorInitialContent,
+        openFile,
+        openDirectory,
+        closeDirectory,
+        createNewFile,
+        createNewDirectory,
+      }}
+    >
       {children}
     </EditorContext.Provider>
   );

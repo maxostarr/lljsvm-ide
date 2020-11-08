@@ -38,7 +38,12 @@ const Folder = ({ name, path, contents, isOpen, className }: PropTypes) => {
   const classes = useStyles();
 
   const makeFile = (file: IFile, i: number) => (
-    <File className={className} name={file.name} key={`${i}${file.name}`} />
+    <File
+      className={className}
+      name={file.name}
+      path={file.path}
+      key={`${i}${file.name}`}
+    />
   );
   const makeFolder = (folder: IDirectory, i: number) => (
     <Folder

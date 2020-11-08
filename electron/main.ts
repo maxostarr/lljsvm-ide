@@ -11,8 +11,11 @@ import installExtension, {
   REACT_DEVELOPER_TOOLS,
 } from "electron-devtools-installer";
 import {
+  createNewDirectory,
+  createNewFile,
   getDirectory,
   getDirectoryContents,
+  getFileContents,
   openDirectory,
 } from "./utils/files";
 
@@ -67,8 +70,8 @@ function createWindow() {
 }
 
 const handleNewRoot = async () => {
-  openDirectory().then((contents) => {
-    win?.webContents.send(ActionTypes.NEW_ROOT, contents);
+  openDirectory().then((root) => {
+    win?.webContents.send(ActionTypes.NEW_ROOT, root);
   });
 };
 
@@ -77,7 +80,29 @@ const handleOpenDirectory = (e: any, path: string) => {
     win?.webContents.send(ActionTypes.OPEN_DIRECTORY, directory);
   });
 };
+
+const handleOpenFile = (e: any, path: string) => {
+  getFileContents(path).then((fileContents) => {
+    win?.webContents.send(ActionTypes.OPEN_FILE, fileContents);
+  });
+};
+
+const handleNewFile = (e: any, path: string) => {
+  createNewFile(path).then((root) => {
+    win?.webContents.send(ActionTypes.NEW_ROOT, root);
+  });
+};
+
+const handleNewDirectory = (e: any, path: string) => {
+  createNewDirectory(path).then((root) => {
+    win?.webContents.send(ActionTypes.NEW_ROOT, root);
+  });
+};
+
 ipcMain.on(ActionTypes.OPEN_DIRECTORY, handleOpenDirectory);
+ipcMain.on(ActionTypes.OPEN_FILE, handleOpenFile);
+ipcMain.on(ActionTypes.NEW_FILE, handleNewFile);
+ipcMain.on(ActionTypes.NEW_DIRECTORY, handleNewDirectory);
 
 const template = [
   {

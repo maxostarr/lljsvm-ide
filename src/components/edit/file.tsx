@@ -1,8 +1,11 @@
 import React from "react";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import { makeStyles } from "@material-ui/core";
+import { useContext } from "react";
+import { EditorContext } from "../../utils/editorContext";
 interface PropTypes {
   name: string;
+  path: string;
   className: string;
 }
 
@@ -25,10 +28,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const File = ({ name, className }: PropTypes) => {
+const File = ({ name, path, className }: PropTypes) => {
   const classes = useStyles();
+  const { openFile } = useContext(EditorContext);
   return (
-    <div className={`${className} ${classes.nameContainer}`}>
+    <div
+      className={`${className} ${classes.nameContainer}`}
+      onClick={() => openFile(path)}
+    >
       <InsertDriveFileIcon />
       <div className={classes.name}>{name}</div>
     </div>

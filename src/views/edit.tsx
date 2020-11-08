@@ -1,7 +1,7 @@
 import { Button, makeStyles } from "@material-ui/core";
-import React from "react";
+import React, { useRef } from "react";
+import { EditorComponent } from "../components/editor/editor";
 import EditorSidebar from "../components/edit/editorSidebar";
-
 import { EditorContextProvider } from "../utils/editorContext";
 
 const useStyles = makeStyles((theme) => ({
@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme) => ({
     display: "grid",
     gridTemplateColumns: "15em 7fr",
     gridTemplateRows: "5em 7fr",
+    overflow: "hidden",
   },
   buttonContainer: {
     display: "flex",
@@ -20,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Edit = () => {
   const classes = useStyles();
+  const valueGetter = useRef("");
   return (
     <EditorContextProvider>
       <div className={classes.container}>
@@ -32,7 +34,9 @@ const Edit = () => {
         <div>
           <EditorSidebar />
         </div>
-        <div>d</div>
+        <div>
+          <EditorComponent valueGetter={valueGetter} />
+        </div>
       </div>
     </EditorContextProvider>
   );

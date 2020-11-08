@@ -4,11 +4,20 @@ import { IDirectory, IFilesystemComponent } from "../../src/types/files";
 
 const { dialog } = require("electron");
 
-const openDirectoryDaialog = async () => {
+const openDirectoryDialog = async () => {
   return await dialog.showOpenDialog({ properties: ["openDirectory"] });
 };
-const openFileDaialog = async () => {
+
+const openFileDialog = async () => {
   return await dialog.showOpenDialog({ properties: ["openFile"] });
+};
+
+const newDirectoryDialog = async () => {
+  return await dialog.showSaveDialog({ properties: ["createDirectory"] });
+};
+
+const newFileDialog = async () => {
+  return await dialog.showSaveDialog({});
 };
 
 export const getDirectoryContents = async (path: string) => {
@@ -23,9 +32,12 @@ export const getDirectoryContents = async (path: string) => {
         isFile: dirent.isFile(),
       } as IFilesystemComponent);
   }
-  console.log(contents);
 
   return contents;
+};
+
+export const getFileContents = async (path: string) => {
+  return (await promises.readFile(path)).toString();
 };
 
 export const getDirectory = async (path: string) => {
@@ -41,9 +53,26 @@ export const getDirectory = async (path: string) => {
 };
 
 export const openDirectory = async () => {
-  const res = await openDirectoryDaialog();
+  const res = await openDirectoryDialog();
   if (res.canceled === true || res.filePaths.length !== 1) {
     return;
   }
   return await getDirectory(res.filePaths[0]);
+};
+
+export const createNewFile = async (rootPath: string) => {
+  const path = (await newFileDialog()).filePath;
+  console.log(path);
+
+  if (path) {
+    await promises.writeFile(path, "");
+  }
+  return await getDirectory(rootPath);
+};
+
+export const createNewDirectory = async (rootPath: string) => {
+  const path = await newDirectoryDialog();
+  console.log(path);
+
+  return await getDirectory(rootPath);
 };
