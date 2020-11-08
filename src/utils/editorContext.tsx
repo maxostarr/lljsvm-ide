@@ -5,35 +5,61 @@ import { useDirectory } from "./useFilesystem";
 
 export const EditorContext = React.createContext({} as IContextValue);
 
-const reducer = (state: IDirectory, action: Action): IDirectory => {
+const updateDirectoryContents = (
+  root: IDirectory,
+  newDirectory: IDirectory,
+): IDirectory => {
+  const newContents = root.contents.map((item) => {
+    if (item.isDirectory === false) {
+      return item;
+    }
+    item = item as IDirectory;
+    if (newDirectory.path === item.path) {
+      return newDirectory;
+    }
+    if (newDirectory.path.includes(item.path)) {
+      return updateDirectoryContents(item, newDirectory);
+    }
+    return item;
+  });
+  return {
+    ...root,
+    contents: newContents,
+  };
+};
+
+const updateCloseDirectory = (root: IDirectory, path: string): IDirectory => {
+  const newContents = root.contents.map((item) => {
+    if (item.isDirectory === false) {
+      return item;
+    }
+    item = item as IDirectory;
+    if (path === item.path) {
+      return {
+        ...item,
+        isOpen: false,
+      };
+    }
+    if (path.includes(item.path)) {
+      return updateCloseDirectory(item, path);
+    }
+    return item;
+  });
+  return {
+    ...root,
+    contents: newContents,
+  };
+};
+
+const reducer = (root: IDirectory, action: Action): IDirectory => {
   switch (action.type) {
     case ActionTypes.OPEN_DIRECTORY:
       const contents = action.payload as IDirectory;
-      const updatedRootContents = state.contents.map((item) => {
-        if (item.path === contents.path) {
-          return contents;
-        }
-        return item;
-      }) as DirOrFile[];
-      return {
-        ...state,
-        contents: updatedRootContents,
-      };
+      const updatedRoot = updateDirectoryContents(root, contents);
+      return updatedRoot;
     case ActionTypes.CLOSE_DIRECTORY:
       const path = action.payload as string;
-      const rootClosedDir = state.contents.map((item) => {
-        if (item.path === path) {
-          return {
-            ...item,
-            isOpen: false,
-          };
-        }
-        return item;
-      }) as DirOrFile[];
-      return {
-        ...state,
-        contents: rootClosedDir,
-      };
+      return updateCloseDirectory(root, path);
     case ActionTypes.NEW_ROOT:
       return action.payload as IDirectory;
     default:
@@ -62,6 +88,8 @@ export const EditorContextProvider = ({ children }: PropTypes) => {
     dispatch({ type: ActionTypes.CLOSE_DIRECTORY, payload: path });
 
   const openDirectory = async (path: string) => {
+    console.log(path);
+
     const dir = await getDirectory(path);
     dispatch({
       type: ActionTypes.OPEN_DIRECTORY,
