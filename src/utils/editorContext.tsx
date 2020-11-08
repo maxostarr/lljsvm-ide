@@ -1,6 +1,6 @@
-import React, { ReactChildren, ReactElement, useReducer } from "react";
+import React, { ReactElement, useReducer } from "react";
 import { Action, ActionTypes } from "../types/fileEnums";
-import { DirOrFile, IDirectory } from "../types/files";
+import { IDirectory } from "../types/files";
 import { useDirectory } from "./useFilesystem";
 
 export const EditorContext = React.createContext({} as IContextValue);
