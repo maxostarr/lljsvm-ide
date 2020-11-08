@@ -1,5 +1,6 @@
 export interface IFilesystemComponent {
   name: string;
+  path: string;
   isDirectory: boolean;
   isFile: boolean;
 }
@@ -8,7 +9,7 @@ export interface IDirectory extends IFilesystemComponent {
   isDirectory: true;
   isFile: false;
   isOpen: boolean;
-  contents: DirorFile[];
+  contents: DirOrFile[];
 }
 
 export interface IFile extends IFilesystemComponent {
@@ -16,4 +17,4 @@ export interface IFile extends IFilesystemComponent {
   isFile: true;
 }
 
-export type DirorFile = IFile | IDirectory;
+export type DirOrFile = IFile | IDirectory;

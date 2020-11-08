@@ -1,5 +1,6 @@
 import { promises } from "fs";
-import { IDirectory, IFilesystemComponent } from "../../types/files";
+import { parse } from "path";
+import { IDirectory, IFilesystemComponent } from "../../src/types/files";
 
 const { dialog } = require("electron");
 
@@ -17,11 +18,26 @@ export const getDirectoryContents = async (path: string) => {
     if (dirent.name[0] !== ".")
       contents.push({
         name: dirent.name,
+        path: `${path}\\${dirent.name}`,
         isDirectory: dirent.isDirectory(),
         isFile: dirent.isFile(),
       } as IFilesystemComponent);
   }
+  console.log(contents);
+
   return contents;
+};
+
+export const getDirectory = async (path: string) => {
+  const contents = await getDirectoryContents(path);
+  return {
+    name: parse(path).name,
+    path,
+    isDirectory: true,
+    isFile: false,
+    isOpen: true,
+    contents,
+  } as IDirectory;
 };
 
 export const openDirectory = async () => {
@@ -29,12 +45,5 @@ export const openDirectory = async () => {
   if (res.canceled === true || res.filePaths.length !== 1) {
     return;
   }
-  const contents = await getDirectoryContents(res.filePaths[0]);
-  return {
-    name: res.filePaths[0],
-    isDirectory: true,
-    isFile: false,
-    isOpen: true,
-    contents,
-  } as IDirectory;
+  return await getDirectory(res.filePaths[0]);
 };

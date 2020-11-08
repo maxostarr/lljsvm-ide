@@ -10,7 +10,13 @@ import * as isDev from "electron-is-dev";
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
 } from "electron-devtools-installer";
-import { openDirectory } from "./utils/files";
+import {
+  getDirectory,
+  getDirectoryContents,
+  openDirectory,
+} from "./utils/files";
+
+import { ActionTypes } from "../src/types/fileEnums";
 
 let win: BrowserWindow | null = null;
 
@@ -60,14 +66,18 @@ function createWindow() {
   }
 }
 
-const handleFileOpen = async () => {
-  console.log("open");
-
+const handleNewRoot = async () => {
   openDirectory().then((contents) => {
-    win?.webContents.send("open-directory", contents);
+    win?.webContents.send(ActionTypes.NEW_ROOT, contents);
   });
 };
-ipcMain.on("open-directory", handleFileOpen);
+
+const handleOpenDirectory = (e: any, path: string) => {
+  getDirectory(path).then((directory) => {
+    win?.webContents.send(ActionTypes.OPEN_DIRECTORY, directory);
+  });
+};
+ipcMain.on(ActionTypes.OPEN_DIRECTORY, handleOpenDirectory);
 
 const template = [
   {
@@ -76,7 +86,7 @@ const template = [
       {
         label: "Open File",
         accelerator: "CommandOrControl+o",
-        click: handleFileOpen,
+        click: handleNewRoot,
       },
       {
         label: "Open Folder",
