@@ -24,11 +24,17 @@ interface PropTypes {
 
 export const EditorComponent = ({ valueGetter, initialValue }: PropTypes) => {
   // const classes = useStyles();
-  const { editorInitialContent, editorPath } = useContext(EditorContext);
+  const { editorInitialContent, editorPath, setModified } = useContext(
+    EditorContext,
+  );
 
   function handleEditorDidMount(_valueGetter: any) {
     valueGetter.current = _valueGetter;
   }
+
+  const handleEditorChange = () => {
+    setModified(editorPath, true);
+  };
   return (
     <Editor
       theme="lljsasm"
@@ -37,6 +43,7 @@ export const EditorComponent = ({ valueGetter, initialValue }: PropTypes) => {
       // editorDidMount={handleEditorDidMount}
       defaultValue={editorInitialContent}
       path={editorPath}
+      onChange={handleEditorChange}
       // wrapperClassName={classes.wrapper}
       // className={classes.editor}
     />

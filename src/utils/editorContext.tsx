@@ -1,3 +1,4 @@
+import { valueOf } from "electron-is-dev";
 import React, { ReactElement, useReducer, useState } from "react";
 import { Action, ActionTypes } from "../types/fileEnums";
 import { IDirectory } from "../types/files";
@@ -74,12 +75,13 @@ interface IContextValue {
   root: IDirectory;
   editorInitialContent: string;
   editorPath: string;
-  openFiles: Array<string>;
+  openFiles: Array<OpenFile>;
   openDirectory: (path: string) => void;
   openFile: (path: string) => void;
   closeDirectory: (path: string) => void;
   createNewFile: (path: string) => void;
   createNewDirectory: (path: string) => void;
+  setModified: (path: string, modified: boolean) => void;
   // setEditorPath: (path: string) => void;
 }
 
@@ -87,11 +89,16 @@ interface PropTypes {
   children: ReactElement;
 }
 
+interface OpenFile {
+  path: string;
+  modified: boolean;
+}
+
 export const EditorContextProvider = ({ children }: PropTypes) => {
   const [root, dispatch] = useReducer(reducer, {} as IDirectory);
   const [editorInitialContent, setEditorInitialContent] = useState("");
   const [editorPath, setEditorPath] = useState("");
-  const [openFiles, setOpenFiles] = useState([] as Array<string>);
+  const [openFiles, setOpenFiles] = useState([] as Array<OpenFile>);
 
   const [getDirectory, createDirectory] = useDirectory((payload) =>
     dispatch({ type: ActionTypes.NEW_ROOT, payload }),
@@ -114,13 +121,23 @@ export const EditorContextProvider = ({ children }: PropTypes) => {
 
   const openFile = async (path: string) => {
     setEditorInitialContent(await readFile(path));
-    if (!openFiles.includes(path)) {
-      setOpenFiles([...openFiles, path]);
+    if (!openFiles.find((file) => file.path === path)) {
+      setOpenFiles([...openFiles, { path, modified: false }]);
     }
     setEditorPath(path);
   };
 
-  const changeTab = (path: string) => {};
+  const setModified = (path: string, modified: boolean) => {
+    setOpenFiles(
+      openFiles.map((file) => {
+        if (file.path !== path) return file;
+        return {
+          path,
+          modified,
+        };
+      }),
+    );
+  };
 
   const createNewFile = (path: string) => {
     createFile(path);
@@ -141,6 +158,7 @@ export const EditorContextProvider = ({ children }: PropTypes) => {
         createNewDirectory,
         editorPath,
         openFiles,
+        setModified,
         // setEditorPath,
       }}
     >

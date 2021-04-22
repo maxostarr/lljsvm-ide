@@ -1,15 +1,15 @@
 import { Tab, Tabs } from "@material-ui/core";
 import React, { useContext } from "react";
 import { EditorContext } from "../../utils/editorContext";
-
+import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 const EditorTabs = () => {
   const { openFiles, editorPath, openFile } = useContext(EditorContext);
-  const openFileTabs = openFiles.map((filename) => {
+  const openFileTabs = openFiles.map(({ path, modified }) => {
     return (
       <Tab
-        value={filename}
-        label={filename.replace(/^.*[\\/]/, "")}
-        key={filename}
+        value={path}
+        label={path.replace(/^.*[\\/]/, "") + (modified ? " ●" : "")}
+        key={path}
       />
     );
   });
