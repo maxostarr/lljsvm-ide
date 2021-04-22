@@ -3,6 +3,7 @@ import React, { useRef } from "react";
 import { EditorComponent } from "../components/editor/editor";
 import EditorSidebar from "../components/edit/editorSidebar";
 import { EditorContextProvider } from "../utils/editorContext";
+import EditorTabs from "../components/edit/editorTabs";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -30,7 +31,9 @@ const Edit = () => {
             Assemble
           </Button>
         </div>
-        <div>b</div>
+        <div>
+          <EditorTabs />
+        </div>
         <div>
           <EditorSidebar />
         </div>

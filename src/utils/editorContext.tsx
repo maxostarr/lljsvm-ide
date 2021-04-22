@@ -74,6 +74,7 @@ interface IContextValue {
   root: IDirectory;
   editorInitialContent: string;
   editorPath: string;
+  openFiles: Array<string>;
   openDirectory: (path: string) => void;
   openFile: (path: string) => void;
   closeDirectory: (path: string) => void;
@@ -90,6 +91,7 @@ export const EditorContextProvider = ({ children }: PropTypes) => {
   const [root, dispatch] = useReducer(reducer, {} as IDirectory);
   const [editorInitialContent, setEditorInitialContent] = useState("");
   const [editorPath, setEditorPath] = useState("");
+  const [openFiles, setOpenFiles] = useState([] as Array<string>);
 
   const [getDirectory, createDirectory] = useDirectory((payload) =>
     dispatch({ type: ActionTypes.NEW_ROOT, payload }),
@@ -112,8 +114,13 @@ export const EditorContextProvider = ({ children }: PropTypes) => {
 
   const openFile = async (path: string) => {
     setEditorInitialContent(await readFile(path));
+    if (!openFiles.includes(path)) {
+      setOpenFiles([...openFiles, path]);
+    }
     setEditorPath(path);
   };
+
+  const changeTab = (path: string) => {};
 
   const createNewFile = (path: string) => {
     createFile(path);
@@ -133,6 +140,7 @@ export const EditorContextProvider = ({ children }: PropTypes) => {
         createNewFile,
         createNewDirectory,
         editorPath,
+        openFiles,
         // setEditorPath,
       }}
     >
