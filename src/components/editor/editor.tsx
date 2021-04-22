@@ -33,8 +33,9 @@ export const EditorComponent = ({ valueGetter, initialValue }: PropTypes) => {
     <Editor
       theme="lljsasm"
       language="lljsasm"
-      value={editorInitialContent}
+      // value={editorInitialContent}
       editorDidMount={handleEditorDidMount}
+
       // wrapperClassName={classes.wrapper}
       // className={classes.editor}
     />
