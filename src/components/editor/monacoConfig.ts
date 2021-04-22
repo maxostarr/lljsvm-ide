@@ -1,10 +1,10 @@
-import { monaco } from "@monaco-editor/react";
+import { loader } from "@monaco-editor/react";
 import { lljsasmDefs } from "./monarchDef";
 import { theme } from "./lljsasmTheme";
 import { completionProvidor } from "./lljsasmCompletions";
 
 export default () => {
-  monaco
+  loader
     .init()
     .then((monacoInstance) => {
       monacoInstance.languages.register({ id: "lljsasm" });

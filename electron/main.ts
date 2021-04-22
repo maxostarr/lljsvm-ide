@@ -111,11 +111,11 @@ const template = [
       {
         label: "Open File",
         accelerator: "CommandOrControl+o",
-        click: handleNewRoot,
       },
       {
         label: "Open Folder",
         accelerator: "CommandOrControl+Shift+o",
+        click: handleNewRoot,
       },
     ],
   },

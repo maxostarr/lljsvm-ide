@@ -35,7 +35,7 @@ const Edit = () => {
           <EditorSidebar />
         </div>
         <div>
-          <EditorComponent valueGetter={valueGetter} />
+          <EditorComponent valueGetter={valueGetter} initialValue={""} />
         </div>
       </div>
     </EditorContextProvider>

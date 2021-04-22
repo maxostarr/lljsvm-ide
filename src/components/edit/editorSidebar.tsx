@@ -21,6 +21,13 @@ const useStyles = makeStyles((theme) => ({
   top: {
     padding: "0.5em",
   },
+  name: {
+    // display: "inline-block",
+    // width: "100%",
+    // whiteSpace: "nowrap",
+    // overflow: "hidden",
+    // textOverflow: "ellipsis",
+  },
 }));
 
 const EditorSidebar = () => {
@@ -59,7 +66,7 @@ const EditorSidebar = () => {
     <div>
       {root.name && (
         <div className={classes.top}>
-          {root.name}
+          <div className={classes.name}>{root.name}</div>
           <IconButton onClick={() => createNewFile(root.path)}>
             <NoteAddIcon />
           </IconButton>

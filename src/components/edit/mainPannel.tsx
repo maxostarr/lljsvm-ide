@@ -91,29 +91,28 @@ export const MainPannelComponent = withStyles(styles)(({ classes }: Props) => {
           <Tab className={classes.tab} label="Run" />
         </Tabs>
 
-        {
-          state === 0 ? (
-            <Button variant="contained" color="secondary" onClick={assembleCode}>
-              Assemble
-            </Button>
-          ) : state === 1 ? (
-            <Button variant="contained" color="secondary" onClick={loadCode}>
-              Load Into Memory
-            </Button>
-          ) : null
-        }
-
+        {state === 0 ? (
+          <Button variant="contained" color="secondary" onClick={assembleCode}>
+            Assemble
+          </Button>
+        ) : state === 1 ? (
+          <Button variant="contained" color="secondary" onClick={loadCode}>
+            Load Into Memory
+          </Button>
+        ) : null}
       </Paper>
-      {state === 0
-        ? <EditorComponent valueGetter={valueGetter} />
-        : state === 1
-          ? <LoaderPanel
-              setLoaderData={setLoaderData}
-              loaderData={loaderData}
-              setLoaderAddress={setLoaderAddress}
-              loaderAddress={loaderAddress}
-            />
-          : <Run />}
+      {state === 0 ? (
+        <EditorComponent valueGetter={valueGetter} initialValue={""} />
+      ) : state === 1 ? (
+        <LoaderPanel
+          setLoaderData={setLoaderData}
+          loaderData={loaderData}
+          setLoaderAddress={setLoaderAddress}
+          loaderAddress={loaderAddress}
+        />
+      ) : (
+        <Run />
+      )}
     </div>
   );
 });

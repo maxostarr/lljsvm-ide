@@ -73,11 +73,13 @@ const reducer = (root: IDirectory, action: Action): IDirectory => {
 interface IContextValue {
   root: IDirectory;
   editorInitialContent: string;
+  editorPath: string;
   openDirectory: (path: string) => void;
   openFile: (path: string) => void;
   closeDirectory: (path: string) => void;
   createNewFile: (path: string) => void;
   createNewDirectory: (path: string) => void;
+  // setEditorPath: (path: string) => void;
 }
 
 interface PropTypes {
@@ -87,6 +89,7 @@ interface PropTypes {
 export const EditorContextProvider = ({ children }: PropTypes) => {
   const [root, dispatch] = useReducer(reducer, {} as IDirectory);
   const [editorInitialContent, setEditorInitialContent] = useState("");
+  const [editorPath, setEditorPath] = useState("");
 
   const [getDirectory, createDirectory] = useDirectory((payload) =>
     dispatch({ type: ActionTypes.NEW_ROOT, payload }),
@@ -109,6 +112,7 @@ export const EditorContextProvider = ({ children }: PropTypes) => {
 
   const openFile = async (path: string) => {
     setEditorInitialContent(await readFile(path));
+    setEditorPath(path);
   };
 
   const createNewFile = (path: string) => {
@@ -128,6 +132,8 @@ export const EditorContextProvider = ({ children }: PropTypes) => {
         closeDirectory,
         createNewFile,
         createNewDirectory,
+        editorPath,
+        // setEditorPath,
       }}
     >
       {children}

@@ -28,7 +28,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const File = ({ name, path, className }: PropTypes) => {
+const File: React.FunctionComponent<PropTypes> = ({
+  name,
+  path,
+  className,
+}: PropTypes) => {
   const classes = useStyles();
   const { openFile } = useContext(EditorContext);
   return (
